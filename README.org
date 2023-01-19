@@ -1,0 +1,28 @@
+#+TITLE: magit-stats
+#+AUTHOR: Rahul M. Juliato
+
+
+* magit-stats
+** What it is
+A very early attempt of writing some sort of git statistics in order
+to be called from Emacs, hopefully from magit.
+
+
+** Plan [/]
+- [ ] Extract what is important from here:
+`git log --pretty=format:'{%n  "commit": "%H",%n  "abbreviated_commit": "%h",%n  "tree": "%T",%n  "abbreviated_tree": "%t",%n  "parent": "%P",%n  "abbreviated_parent": "%p",%n  "refs": "%D",%n  "encoding": "%e",%n  "subject": "%s",%n  "sanitized_subject_line": "%f",%n  "body": "%b",%n  "commit_notes": "%N",%n  "verification_flag": "%G?",%n  "signer": "%GS",%n  "signer_key": "%GK",%n  "author": {%n    "name": "%aN",%n    "email": "%aE",%n    "date": "%aD"%n  },%n  "commiter": {%n    "name": "%cN",%n    "email": "%cE",%n    "date": "%cD"%n  }%n},'`
+
+- [ ] Create a node app that runs the above command on a git folder (has .git/)
+
+- [ ] Implement JSON parser to ensure valid JSONs are created (prettier?)
+
+- [ ] Calculate basic statistics
+
+- [ ] Export statistics JSON result file
+
+- [ ] Make elisp package that calls the node function passing the project folder as argument
+
+- [ ] Generate .org buffer parsing JSON into Emacs Objects, to org tables
+
+- [ ] Generate file.html with base64 encoded graphics and tables
+
