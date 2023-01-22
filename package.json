@@ -25,7 +25,8 @@
   },
   "homepage": "https://github.com/LionyxML/magit-stats#readme",
   "dependencies": {
-    "prettier": "^2.8.3"
+    "prettier": "^2.8.3",
+    "ramda": "^0.28.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

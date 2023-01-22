@@ -1,5 +1,17 @@
 import { exec } from "child_process";
 import prettier from "prettier";
+import {
+  pipe,
+  map,
+  uniq,
+  prop,
+  applySpec,
+  filter,
+  pathEq,
+  zipWith,
+  mergeWith,
+  concat,
+} from "ramda";
 
 const APP_NAME = "magit-stats";
 const CHECK_GIT_DIR_CMD = `git status`;
@@ -9,7 +21,7 @@ const logMsg = (msg) => console.log(`[${APP_NAME}]`, msg);
 const logError = (msg) => console.error(`[${APP_NAME}]`, msg);
 
 const checkIsInsideGitDir = () =>
-  exec(CHECK_GIT_DIR_CMD, (error, stdout, stderr) => {
+  exec(CHECK_GIT_DIR_CMD, (error) => {
     if (error) {
       logError(error.message);
       process.exit(-1);
@@ -31,9 +43,37 @@ const getGitLogStats = () =>
       prettier.format(`[${stdout}]`, { parser: "json" })
     );
 
-    const commits = gitObject.length;
+    const totalCommits = gitObject.length;
 
-    logMsg({ commits });
+    const authors = pipe(
+      map(prop("author")),
+      map(
+        applySpec({
+          name: prop("name"),
+          email: prop("email"),
+        })
+      ),
+      uniq
+    )(gitObject);
+
+    const commitsByAuthor = pipe(
+      map((author) => {
+        const commits = filter(
+          pathEq(["author", "name"], prop("name", author)),
+          gitObject
+        ).length;
+
+        const percent = (commits / totalCommits) * 100;
+
+        return {
+          commits,
+          percent,
+        };
+      }),
+      zipWith(mergeWith(concat), authors)
+    )(authors);
+
+    logMsg({ totalCommits, authors, commitsByAuthor });
   });
 
 const main = () => {
