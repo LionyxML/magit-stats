@@ -1,0 +1,29 @@
+{
+  "name": "magit-stats",
+  "version": "1.0.0",
+  "description": "A hopfull cli tool to get git stats",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LionyxML/magit-stats.git"
+  },
+  "keywords": [
+    "emacs",
+    "magit",
+    "git",
+    "stats"
+  ],
+  "author": "Rahul M. Juliato",
+  "license": "GPL-2.0-only",
+  "bugs": {
+    "url": "https://github.com/LionyxML/magit-stats/issues"
+  },
+  "homepage": "https://github.com/LionyxML/magit-stats#readme",
+  "dependencies": {
+    "prettier": "^2.8.3"
+  }
+}
