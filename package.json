@@ -1,6 +1,6 @@
 {
   "name": "magit-stats",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A hopfull cli tool to get git stats",
   "type": "module",
   "main": "index.js",
