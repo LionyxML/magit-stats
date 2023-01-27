@@ -7,7 +7,7 @@ A very early attempt of writing some sort of git statistics in order
 to be called from Emacs, hopefully from magit.
 
 
-** Plan [29%]
+** Plan [41%]
 - [X] Define git command to output log
 
 - [X] Detects if it is in a git folder
@@ -18,15 +18,17 @@ to be called from Emacs, hopefully from magit.
 
 - [X] Calculate commits by author
 
-- [ ] Calculate commits by week day
+- [X] Calculate commits by week day
 
-- [ ] Calculate commits per day hour
+- [X] Calculate commits per day hour
 
 - [ ] Calculate repository size
 
 - [ ] Calculate initial commit date
 
 - [ ] Calculate last commit date
+
+- [ ] Compose time series of commits by user
 
 - [ ] Use CLI tool to determine input dir, output dir and output format
 
