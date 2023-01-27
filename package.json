@@ -4,6 +4,9 @@
   "description": "A hopfull cli tool to get git stats",
   "type": "module",
   "main": "index.js",
+  "bin": {
+    "magit-stats": "node index.js"
+  },
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js"
