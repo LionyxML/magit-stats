@@ -7,30 +7,38 @@ A very early attempt of writing some sort of git statistics in order
 to be called from Emacs, hopefully from magit.
 
 
-** Plan [0/8]
-- [ ] Extract what is important from here:
-#+BEGIN_SRC bash
-      Original:
+** Plan [29%]
+- [X] Define git command to output log
 
-      git log --pretty=format:'{%n  "commit": "%H",%n  "abbreviated_commit": "%h",%n  "tree": "%T",%n  "abbreviated_tree": "%t",%n  "parent": "%P",%n  "abbreviated_parent": "%p",%n  "refs": "%D",%n  "encoding": "%e",%n  "subject": "%s",%n  "sanitized_subject_line": "%f",%n  "body": "%b",%n  "commit_notes": "%N",%n  "verification_flag": "%G?",%n  "signer": "%GS",%n  "signer_key": "%GK",%n  "author": {%n    "name": "%aN",%n    "email": "%aE",%n    "date": "%aD"%n  },%n  "commiter": {%n    "name": "%cN",%n    "email": "%cE",%n    "date": "%cD"%n  }%n},'
+- [X] Detects if it is in a git folder
 
-      Without body:
+- [X] Uses JSON parser to ensure valid JSONs are created
 
-      git log --pretty=format:'{%n  "commit": "%H",%n  "abbreviated_commit": "%h",%n  "tree": "%T",%n  "abbreviated_tree": "%t",%n  "parent": "%P",%n  "abbreviated_parent": "%p",%n  "refs": "%D",%n  "encoding": "%e",%n  "subject": "%s",%n  "sanitized_subject_line": "%f",%n  "commit_notes": "%N",%n  "verification_flag": "%G?",%n  "signer": "%GS",%n  "signer_key": "%GK",%n  "author": {%n    "name": "%aN",%n    "email": "%aE",%n    "date": "%aD"%n  },%n  "commiter": {%n    "name": "%cN",%n    "email": "%cE",%n    "date": "%cD"%n  }%n},'  
-       
-#+END_SRC
+- [X] Calculate total commits
 
-- [ ] Create a node app that runs the above command on a git folder (has .git/)
+- [X] Calculate commits by author
 
-- [ ] Implement JSON parser to ensure valid JSONs are created (prettier?)
+- [ ] Calculate commits by week day
 
-- [ ] Calculate basic statistics
+- [ ] Calculate commits per day hour
 
-- [ ] Export statistics JSON result file
+- [ ] Calculate repository size
+
+- [ ] Calculate initial commit date
+
+- [ ] Calculate last commit date
+
+- [ ] Use CLI tool to determine input dir, output dir and output format
+
+- [ ] Create exporter to JSON on stdout
+
+- [ ] Create exporter to JSON file
+
+- [ ] Create exporter do HTML
+
+- [ ] Create exporter to org file
+
+- [ ] Create exporter to md file
 
 - [ ] Make elisp package that calls the node function passing the project folder as argument
-
-- [ ] Generate .org buffer parsing JSON into Emacs Objects, to org tables
-
-- [ ] Generate file.html with base64 encoded graphics and tables
 
