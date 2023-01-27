@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.js",
   "bin": {
-    "magit-stats": "node index.js"
+    "magit-stats": "start"
   },
   "scripts": {
     "start": "node index.js",

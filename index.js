@@ -28,6 +28,7 @@ const APP_NAME = "magit-stats";
 const CHECK_GIT_DIR_CMD = `git status`;
 const GIT_LOG_CMD = `git log --pretty=format:'{%n  "commit": "%H",%n  "abbreviated_commit": "%h",%n  "tree": "%T",%n  "abbreviated_tree": "%t",%n  "parent": "%P",%n  "abbreviated_parent": "%p",%n  "refs": "%D",%n  "encoding": "%e",%n  "subject": "%s",%n  "sanitized_subject_line": "%f",%n  "commit_notes": "%N",%n  "verification_flag": "%G?",%n  "signer": "%GS",%n  "signer_key": "%GK",%n  "author": {%n    "name": "%aN",%n    "email": "%aE",%n    "date": "%aD"%n  },%n  "commiter": {%n    "name": "%cN",%n    "email": "%cE",%n    "date": "%cD"%n  }%n},'`;
 const DAY_HOURS = range(0, 23);
+const WEEK_DAYS = range(0, 7);
 
 const logMsg = (msg) => console.log(`[${APP_NAME}]`, msg);
 const logError = (msg) => console.error(`[${APP_NAME}]`, msg);
@@ -115,7 +116,23 @@ const getGitLogStats = () =>
       mapIndexed((commits, hour) => ({ hour, commits }))
     )(DAY_HOURS);
 
-    logMsg({ totalCommits, authors, commitsByAuthor, commitsByDayHour });
+    const commitsByWeekDay = pipe(
+      map((day) =>
+        pipe(
+          map(pathEq(["date", "weekDay"], day)),
+          count((hasCommit) => hasCommit)
+        )(commits)
+      ),
+      mapIndexed((commits, weekDay) => ({ weekDay, commits }))
+    )(WEEK_DAYS);
+
+    logMsg({
+      totalCommits,
+      authors,
+      commitsByAuthor,
+      commitsByDayHour,
+      commitsByWeekDay,
+    });
   });
 
 const main = () => {
