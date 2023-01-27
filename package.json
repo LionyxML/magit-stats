@@ -10,8 +10,10 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "lint": "eslint ./",
+    "lint:fix": "eslint -- --fix",
     "prettier": "prettier ./ --check",
-    "prettier:format": "npm run prettier -- --write"
+    "prettier:fix": "prettier -- --write"
   },
   "repository": {
     "type": "git",
@@ -33,6 +35,8 @@
     "ramda": "^0.28.0"
   },
   "devDependencies": {
+    "eslint": "^8.32.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "nodemon": "^2.0.20",
     "prettier": "^2.8.3"
   }
