@@ -9,7 +9,9 @@
   },
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "prettier": "prettier ./ --check",
+    "prettier:format": "npm run prettier -- --write"
   },
   "repository": {
     "type": "git",
@@ -28,10 +30,10 @@
   },
   "homepage": "https://github.com/LionyxML/magit-stats#readme",
   "dependencies": {
-    "prettier": "^2.8.3",
     "ramda": "^0.28.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "prettier": "^2.8.3"
   }
 }

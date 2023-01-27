@@ -22,6 +22,8 @@ import {
   uniq,
   zipObj,
   zipWith,
+  take,
+  last,
 } from "ramda";
 
 const APP_NAME = "magit-stats";
@@ -72,7 +74,7 @@ const getGitLogStats = () =>
       map((commit) => ({
         ...commit,
         date: generateDateObj(path(["author", "date"], commit)),
-      }))
+      })),
     )(stdout);
 
     const totalCommits = commits.length;
@@ -83,56 +85,77 @@ const getGitLogStats = () =>
         applySpec({
           name: prop("name"),
           email: prop("email"),
-        })
+        }),
       ),
-      uniq
+      uniq,
     )(commits);
 
     const commitsByAuthor = pipe(
       map((author) => {
         const authorCommits = filter(
           pathEq(["author", "name"], prop("name", author)),
-          commits
+          commits,
         ).length;
 
-        const percent = (authorCommits / totalCommits) * 100;
+        const authorCommitsShare = (authorCommits / totalCommits) * 100;
 
         return {
           authorCommits,
-          percent,
+          authorCommitsShare,
         };
       }),
       zipWith(mergeWith(concat), authors),
-      sortWith([descend(prop("authorCommits"))])
+      sortWith([descend(prop("authorCommits"))]),
     )(authors);
 
     const commitsByDayHour = pipe(
       map((hour) =>
         pipe(
           map(pathEq(["date", "hour"], hour)),
-          count((hasCommit) => hasCommit)
-        )(commits)
+          count((hasCommit) => hasCommit),
+        )(commits),
       ),
-      mapIndexed((commits, hour) => ({ hour, commits }))
+      mapIndexed((commits, hour) => ({ hour, commits })),
     )(DAY_HOURS);
 
     const commitsByWeekDay = pipe(
       map((day) =>
         pipe(
           map(pathEq(["date", "weekDay"], day)),
-          count((hasCommit) => hasCommit)
-        )(commits)
+          count((hasCommit) => hasCommit),
+        )(commits),
       ),
-      mapIndexed((commits, weekDay) => ({ weekDay, commits }))
+      mapIndexed((commits, weekDay) => ({ weekDay, commits })),
     )(WEEK_DAYS);
 
-    logMsg({
+    const commitDatesSorted = pipe(
+      map(prop("date")),
+      sortWith([descend(path(["year", "month", "day", "hour"]))]),
+    )(commits);
+
+    const firstCommit = new Date(
+      commitDatesSorted.at(0).year,
+      commitDatesSorted.at(0).month,
+      commitDatesSorted.at(0).day,
+    ).toDateString();
+
+    const lastCommit = new Date(
+      commitDatesSorted.at(-1).year,
+      commitDatesSorted.at(-1).month,
+      commitDatesSorted.at(-1).day,
+    ).toDateString();
+
+    const repoStats = {
       totalCommits,
       authors,
       commitsByAuthor,
       commitsByDayHour,
       commitsByWeekDay,
-    });
+      firstCommit,
+      lastCommit,
+    };
+
+    logMsg(repoStats);
   });
 
 const main = () => {
