@@ -1,11 +1,11 @@
 {
   "name": "magit-stats",
-  "version": "1.0.5-dev",
+  "version": "1.0.6-dev",
   "description": "A hopeful cli tool to generate git repository statistics",
   "main": "./src/index.ts",
   "type": "module",
   "bin": {
-    "magit-stats": "bin/magit-stats.js"
+    "magit-stats": "bin/magit-stats.cjs"
   },
   "scripts": {
     "build": "webpack --mode=production --node-env=production",
