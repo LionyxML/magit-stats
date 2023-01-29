@@ -1,6 +1,6 @@
 {
   "name": "magit-stats",
-  "version": "1.0.4-dev",
+  "version": "1.0.5-dev",
   "description": "A hopeful cli tool to generate git repository statistics",
   "main": "./src/index.ts",
   "type": "module",
