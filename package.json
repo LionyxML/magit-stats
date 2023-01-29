@@ -1,7 +1,7 @@
 {
-  "name": "my-webpack-project",
-  "version": "1.0.0",
-  "description": "My webpack project",
+  "name": "magit-stats",
+  "version": "1.0.2-dev",
+  "description": "A hopeful cli tool to generate git repository statistics",
   "main": "./src/index.ts",
   "type": "module",
   "bin": {
@@ -14,10 +14,7 @@
     "lint": "eslint ./",
     "lint:fix": "eslint -- --fix",
     "prettier": "prettier src/ --check",
-    "prettier:fix": "prettier -- --write",
-    "build:dev": "webpack --mode=development",
-    "build:prod": "webpack --mode=production --node-env=production",
-    "watch": "webpack --watch"
+    "prettier:fix": "prettier -- --write"
   },
   "pkg": {
     "scripts": "bin/**/*.js"
