@@ -53,7 +53,8 @@ const checkIsInsideGitDir = () =>
   });
 
 const getGitLogStats = () =>
-  exec(GIT_LOG_CMD, (error, stdout, stderr) => {
+  // HACK: maxBuffer undefined is not documented and may stop working out of nowhere
+  exec(GIT_LOG_CMD, { maxBuffer: undefined }, (error, stdout, stderr) => {
     if (error) {
       logError(error.message);
       process.exit(-1);
