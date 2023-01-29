@@ -1,5 +1,7 @@
+#! /usr/bin/env node
+
 import { exec } from "child_process";
-import prettier from "prettier";
+import * as prettier from "prettier";
 import {
   addIndex,
   applySpec,
@@ -9,7 +11,7 @@ import {
   filter,
   map,
   mergeWith,
-  path,
+  pathOr,
   pathEq,
   pipe,
   prop,
@@ -25,12 +27,12 @@ const GIT_LOG_CMD = `git log --pretty=format:'{%n  "commit": "%H",%n  "abbreviat
 const DAY_HOURS = range(0, 23);
 const WEEK_DAYS = range(0, 7);
 
-const logMsg = (msg) => console.log(`[${APP_NAME}]`, msg);
-const logError = (msg) => console.error(`[${APP_NAME}]`, msg);
+const logMsg = (msg: string | Object) => console.log(`[${APP_NAME}]`, msg);
+const logError = (msg: string | Object) => console.error(`[${APP_NAME}]`, msg);
 
 const mapIndexed = addIndex(map);
 
-const generateDateObj = (dateRFC) => {
+const generateDateObj = (dateRFC: string) => {
   const date = new Date(dateRFC);
 
   return {
@@ -64,10 +66,10 @@ const getGitLogStats = () =>
     const commits = pipe(
       (stdout) => prettier.format(`[${stdout}]`, { parser: "json" }),
       JSON.parse,
-      map((commit) => ({
+      map((commit: Object) => ({
         ...commit,
-        date: generateDateObj(path(["author", "date"], commit)),
-      }))
+        date: generateDateObj(pathOr("", ["author", "date"], commit)),
+      })),
     )(stdout);
 
     const totalCommits = commits.length;
@@ -78,16 +80,16 @@ const getGitLogStats = () =>
         applySpec({
           name: prop("name"),
           email: prop("email"),
-        })
+        }),
       ),
-      uniq
+      uniq,
     )(commits);
 
     const commitsByAuthor = pipe(
       map((author) => {
         const authorCommits = filter(
           pathEq(["author", "name"], prop("name", author)),
-          commits
+          commits,
         ).length;
 
         const authorCommitsShare = (authorCommits / totalCommits) * 100;
@@ -98,44 +100,44 @@ const getGitLogStats = () =>
         };
       }),
       zipWith(mergeWith(concat), authors),
-      sortWith([descend(prop("authorCommits"))])
+      sortWith([descend(prop("authorCommits"))]),
     )(authors);
 
     const commitsByDayHour = pipe(
       map((hour) =>
         pipe(
           map(pathEq(["date", "hour"], hour)),
-          count((hasCommit) => hasCommit)
-        )(commits)
+          count((hasCommit) => hasCommit),
+        )(commits),
       ),
-      mapIndexed((commits, hour) => ({ hour, commits }))
+      mapIndexed((commits, hour) => ({ hour, commits })),
     )(DAY_HOURS);
 
     const commitsByWeekDay = pipe(
       map((day) =>
         pipe(
           map(pathEq(["date", "weekDay"], day)),
-          count((hasCommit) => hasCommit)
-        )(commits)
+          count((hasCommit) => hasCommit),
+        )(commits),
       ),
-      mapIndexed((commits, weekDay) => ({ weekDay, commits }))
+      mapIndexed((commits, weekDay) => ({ weekDay, commits })),
     )(WEEK_DAYS);
 
     const commitDatesSorted = pipe(
       map(prop("date")),
-      sortWith([descend(path(["year", "month", "day", "hour"]))])
+      sortWith([descend(pathOr("", ["year", "month", "day", "hour"]))]),
     )(commits);
 
     const firstCommit = new Date(
-      commitDatesSorted.at(0).year,
-      commitDatesSorted.at(0).month,
-      commitDatesSorted.at(0).day
+      pathOr(0, [0, "year"], commitDatesSorted),
+      pathOr(0, [0, "month"], commitDatesSorted),
+      pathOr(0, [0, "day"], commitDatesSorted),
     ).toDateString();
 
     const lastCommit = new Date(
-      commitDatesSorted.at(-1).year,
-      commitDatesSorted.at(-1).month,
-      commitDatesSorted.at(-1).day
+      pathOr(0, [-1, "year"], commitDatesSorted),
+      pathOr(0, [-1, "month"], commitDatesSorted),
+      pathOr(0, [-1, "day"], commitDatesSorted),
     ).toDateString();
 
     const repoStats = {
