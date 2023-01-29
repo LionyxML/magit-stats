@@ -129,15 +129,15 @@ const getGitLogStats = () =>
     )(commits);
 
     const firstCommit = new Date(
-      pathOr(0, [0, "year"], commitDatesSorted),
-      pathOr(0, [0, "month"], commitDatesSorted),
-      pathOr(0, [0, "day"], commitDatesSorted),
-    ).toDateString();
-
-    const lastCommit = new Date(
       pathOr(0, [-1, "year"], commitDatesSorted),
       pathOr(0, [-1, "month"], commitDatesSorted),
       pathOr(0, [-1, "day"], commitDatesSorted),
+    ).toDateString();
+
+    const lastCommit = new Date(
+      pathOr(0, [0, "year"], commitDatesSorted),
+      pathOr(0, [0, "month"], commitDatesSorted),
+      pathOr(0, [0, "day"], commitDatesSorted),
     ).toDateString();
 
     const repoStats = {

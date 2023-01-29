@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "tsc --build",
-    "start": "ts-node ./src/index.ts",
+    "start": "ts-node --esm ./src/index.ts",
     "dev": "nodemon",
     "lint": "eslint ./",
     "lint:fix": "eslint -- --fix",

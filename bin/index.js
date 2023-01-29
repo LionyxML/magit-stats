@@ -70,8 +70,8 @@ var getGitLogStats = function () {
             return pipe(map(pathEq(["date", "weekDay"], day)), count(function (hasCommit) { return hasCommit; }))(commits);
         }), mapIndexed(function (commits, weekDay) { return ({ weekDay: weekDay, commits: commits }); }))(WEEK_DAYS);
         var commitDatesSorted = pipe(map(prop("date")), sortWith([descend(pathOr("", ["year", "month", "day", "hour"]))]))(commits);
-        var firstCommit = new Date(pathOr(0, [0, "year"], commitDatesSorted), pathOr(0, [0, "month"], commitDatesSorted), pathOr(0, [0, "day"], commitDatesSorted)).toDateString();
-        var lastCommit = new Date(pathOr(0, [-1, "year"], commitDatesSorted), pathOr(0, [-1, "month"], commitDatesSorted), pathOr(0, [-1, "day"], commitDatesSorted)).toDateString();
+        var firstCommit = new Date(pathOr(0, [-1, "year"], commitDatesSorted), pathOr(0, [-1, "month"], commitDatesSorted), pathOr(0, [-1, "day"], commitDatesSorted)).toDateString();
+        var lastCommit = new Date(pathOr(0, [0, "year"], commitDatesSorted), pathOr(0, [0, "month"], commitDatesSorted), pathOr(0, [0, "day"], commitDatesSorted)).toDateString();
         var repoStats = {
             totalCommits: totalCommits,
             authors: authors,
