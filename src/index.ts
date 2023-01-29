@@ -1,5 +1,7 @@
+#! /usr/bin/env node
+
 import { exec } from "child_process";
-import * as prettier from "prettier";
+import { format } from "prettier";
 import {
   addIndex,
   applySpec,
@@ -62,7 +64,7 @@ const getGitLogStats = () =>
     }
 
     const commits = pipe(
-      (stdout) => prettier.format(`[${stdout}]`, { parser: "json" }),
+      (stdout) => format(`[${stdout}]`, { parser: "json" }),
       JSON.parse,
       map((commit: Object) => ({
         ...commit,
