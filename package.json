@@ -1,20 +1,23 @@
 {
-  "name": "magit-stats",
-  "version": "1.0.2-dev",
-  "description": "A hopeful cli tool to generate git repository statistics",
+  "name": "my-webpack-project",
+  "version": "1.0.0",
+  "description": "My webpack project",
   "main": "./src/index.ts",
   "type": "module",
   "bin": {
-    "magit-stats": "bin/index.js"
+    "magit-stats": "bin/magit-stats.js"
   },
   "scripts": {
-    "build": "tsc --build",
+    "build": "webpack --mode=production --node-env=production",
     "start": "ts-node --esm ./src/index.ts",
     "dev": "nodemon",
     "lint": "eslint ./",
     "lint:fix": "eslint -- --fix",
     "prettier": "prettier src/ --check",
-    "prettier:fix": "prettier -- --write"
+    "prettier:fix": "prettier -- --write",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "watch": "webpack --watch"
   },
   "pkg": {
     "scripts": "bin/**/*.js"
@@ -42,11 +45,15 @@
     "@types/node": "^18.11.18",
     "@types/prettier": "^2.7.2",
     "@types/ramda": "^0.28.22",
+    "@webpack-cli/generators": "^3.0.1",
     "eslint": "^8.32.0",
     "eslint-plugin-prettier": "^4.2.1",
     "nodemon": "^2.0.20",
     "prettier": "^2.8.3",
+    "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   }
 }
