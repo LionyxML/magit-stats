@@ -7,7 +7,7 @@ A very early attempt of writing some sort of git statistics in order
 to be called from Emacs, hopefully from magit.
 
 
-** Plan [41%]
+** Plan [57%]
 - [X] Define git command to output log
 
 - [X] Detects if it is in a git folder
@@ -24,9 +24,15 @@ to be called from Emacs, hopefully from magit.
 
 - [ ] Calculate repository size
 
-- [ ] Calculate initial commit date
+- [X] Calculate initial commit date
 
-- [ ] Calculate last commit date
+- [X] Calculate last commit date
+
+- [X] Change project language to Typescript
+
+- [X] Configure build scripts and bin
+
+- [X] Configure npm registry and npx
 
 - [ ] Compose time series of commits by user
 
