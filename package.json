@@ -1,7 +1,7 @@
 {
   "name": "magit-stats",
-  "version": "1.0.7-dev",
-  "description": "A hopeful cli tool to generate git repository statistics",
+  "version": "1.0.8-dev",
+  "description": "Your git repository statistics",
   "main": "./src/index.ts",
   "type": "module",
   "bin": {
@@ -36,7 +36,9 @@
   },
   "homepage": "https://github.com/LionyxML/magit-stats#readme",
   "dependencies": {
-    "ramda": "^0.28.0"
+    "@types/yargs": "^17.0.20",
+    "ramda": "^0.28.0",
+    "yargs": "^17.6.2"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",

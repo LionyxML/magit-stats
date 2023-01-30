@@ -7,7 +7,7 @@ A very early attempt of writing some sort of git statistics in order
 to be called from Emacs, hopefully from magit.
 
 
-** Plan [57%]
+** Plan [71%]
 - [X] Define git command to output log
 
 - [X] Detects if it is in a git folder
@@ -36,11 +36,11 @@ to be called from Emacs, hopefully from magit.
 
 - [ ] Compose time series of commits by user
 
-- [ ] Use CLI tool to determine input dir, output dir and output format
+- [X] Make basic CLI
 
-- [ ] Create exporter to JSON on stdout
+- [X] Create exporter to JSON on stdout
 
-- [ ] Create exporter to JSON file
+- [X] Create exporter to JSON file
 
 - [ ] Create exporter do HTML
 
