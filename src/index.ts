@@ -33,8 +33,8 @@ const GIT_LOG_CMD = `git log --pretty=format:'{%n  "commit": "%H",%n  "abbreviat
 const DAY_HOURS = range(0, 23);
 const WEEK_DAYS = range(0, 7);
 
-const logMsg = (msg: string | Object) => console.log(msg);
-const logError = (msg: string | Object) => console.error(msg);
+const logMsg = (msg: string | object) => console.log(msg);
+const logError = (msg: string | object) => console.error(msg);
 
 const mapIndexed = addIndex(map);
 
@@ -65,7 +65,7 @@ const getGitLogStats = () => {
   const commits = pipe(
     (stdout) => format(`[${stdout}]`, { parser: "json" }),
     JSON.parse,
-    map((commit: Object) => ({
+    map((commit: object) => ({
       ...commit,
       date: generateDateObj(pathOr("", ["author", "date"], commit)),
     })),
