@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "webpack --mode=production --node-env=production",
-    "start": "ts-node --esm ./src/index.ts",
+    "start": "npx ts-node --esm --experimentalSpecifierResolution=node src/index.ts",
     "dev": "nodemon",
     "lint": "eslint src/ --ext .ts",
     "lint:fix": "eslint -- --fix",

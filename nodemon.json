@@ -2,5 +2,5 @@
   "watch": ["src"],
   "ext": ".ts,.js",
   "ignore": [],
-  "exec": "ts-node --esm ./src/index.ts"
+  "exec": "npx ts-node --esm --experimentalSpecifierResolution=node src/index.ts"
 }

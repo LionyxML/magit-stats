@@ -1,10 +1,8 @@
 #! /usr/bin/env node
 
-import { exec, execSync } from "child_process";
 import { writeFile } from "fs";
 import { format } from "prettier";
 import {
-  addIndex,
   applySpec,
   concat,
   count,
@@ -12,55 +10,30 @@ import {
   filter,
   map,
   mergeWith,
-  pathOr,
   pathEq,
+  pathOr,
   pipe,
   prop,
-  range,
   sortWith,
   uniq,
   zipWith,
 } from "ramda";
 import _yargs from "yargs";
 import { hideBin } from "yargs/helpers";
+import { APP_DESC, COMMAND, DAY_HOURS, WEEK_DAYS } from "./config";
+import {
+  checkIsInsideGitDir,
+  generateDateObj,
+  getGitLog,
+  logError,
+  logMsg,
+  mapIndexed,
+} from "./utils";
 
 const yargs = _yargs(hideBin(process.argv));
 
-const APP_DESC = "[magit-stats] - Your git repository statistics";
-const COMMAND = "npx magit-stats ";
-const CHECK_GIT_DIR_CMD = `git status`;
-const GIT_LOG_CMD = `git log --pretty=format:'{%n  "commit": "%H",%n  "abbreviated_commit": "%h",%n  "tree": "%T",%n  "abbreviated_tree": "%t",%n  "parent": "%P",%n  "abbreviated_parent": "%p",%n  "refs": "%D",%n  "encoding": "%e",%n  "sanitized_subject_line": "%f",%n  "commit_notes": "%N",%n  "verification_flag": "%G?",%n  "signer": "%GS",%n  "signer_key": "%GK",%n  "author": {%n    "name": "%aN",%n    "email": "%aE",%n    "date": "%aD"%n  },%n  "commiter": {%n    "name": "%cN",%n    "email": "%cE",%n    "date": "%cD"%n  }%n},'`;
-const DAY_HOURS = range(0, 24);
-const WEEK_DAYS = range(0, 7);
-
-const logMsg = (msg: string | object) => console.log(msg);
-const logError = (msg: string | object) => console.error(msg);
-
-const mapIndexed = addIndex(map);
-
-const generateDateObj = (dateRFC: string) => {
-  const date = new Date(dateRFC);
-
-  return {
-    month: date.getMonth(),
-    day: date.getDate(),
-    year: date.getFullYear(),
-    hour: date.getHours(),
-    weekDay: date.getDay(),
-  };
-};
-
-const checkIsInsideGitDir = () =>
-  exec(CHECK_GIT_DIR_CMD, (error) => {
-    if (error) {
-      logError(error.message);
-      process.exit(-1);
-    }
-  });
-
 const getGitLogStats = () => {
-  // HACK: maxBuffer undefined is not documented and may stop working out of nowhere
-  const gitLogOutput = execSync(GIT_LOG_CMD, { maxBuffer: undefined });
+  const gitLogOutput = getGitLog();
 
   const commits = pipe(
     (stdout) => format(`[${stdout}]`, { parser: "json" }),
@@ -139,7 +112,7 @@ const getGitLogStats = () => {
     pathOr(0, [0, "day"], commitDatesSorted),
   ).toDateString();
 
-  const repoStats = {
+  return {
     totalCommits,
     authors,
     commitsByAuthor,
@@ -148,8 +121,26 @@ const getGitLogStats = () => {
     firstCommit,
     lastCommit,
   };
+};
 
-  return repoStats;
+const processOutput = (stats: any, argv: any) => {
+  if (!(Object.keys(argv).includes("json") || Object.keys(argv).includes("stdout"))) {
+    logError("Error: You should choose at least --json or --stdout.");
+    logError(`Check all the options with: ${COMMAND} --help`);
+    process.exit(-1);
+  }
+
+  const isMinified = argv.minify;
+
+  if (argv.stdout) logMsg(JSON.stringify(stats, null, isMinified ? 0 : 2));
+
+  if (argv.json)
+    writeFile(argv.json, JSON.stringify(stats, null, isMinified ? 0 : 2), (error) => {
+      if (error) {
+        logError(error.message);
+        process.exit(-1);
+      }
+    });
 };
 
 const getArgs = () =>
@@ -173,32 +164,13 @@ const getArgs = () =>
     .alias("h", "help")
     .alias("v", "version").argv;
 
-const processOutput = (stats: any, argv: any) => {
-  if (!(Object.keys(argv).includes("json") || Object.keys(argv).includes("stdout"))) {
-    logError("Error: You should choose at least --json or --stdout.");
-    logError(`Check all the options with: ${COMMAND} --help`);
-    process.exit(-1);
-  }
-
-  const isMinified = argv.minify;
-
-  if (argv.stdout) logMsg(JSON.stringify(stats, null, isMinified ? 0 : 2));
-
-  if (argv.json)
-    writeFile(argv.json, JSON.stringify(stats, null, isMinified ? 0 : 2), (error) => {
-      if (error) {
-        logError(error.message);
-        process.exit(-1);
-      }
-    });
-};
-
 const main = () => {
-  // TODO: this looks like it should be a pipe
   checkIsInsideGitDir();
 
   const argv = getArgs();
+
   const stats = getGitLogStats();
+
   processOutput(stats, argv);
 };
 
