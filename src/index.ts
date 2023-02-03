@@ -29,8 +29,11 @@ import {
   logMsg,
   mapIndexed,
 } from "./utils";
+import { generateHTMLReport } from "./htmlReport";
 
 const yargs = _yargs(hideBin(process.argv));
+
+export type getGitLogStatsType = ReturnType<typeof getGitLogStats>;
 
 const getGitLogStats = () => {
   const gitLogOutput = getGitLog();
@@ -43,6 +46,8 @@ const getGitLogStats = () => {
       date: generateDateObj(pathOr("", ["author", "date"], commit)),
     })),
   )(gitLogOutput);
+
+  console.log(">>>", { commits });
 
   const totalCommits = commits.length;
 
@@ -124,8 +129,10 @@ const getGitLogStats = () => {
 };
 
 const processOutput = (stats: any, argv: any) => {
-  if (!(Object.keys(argv).includes("json") || Object.keys(argv).includes("stdout"))) {
-    logError("Error: You should choose at least --json or --stdout.");
+  const argvKeys = Object.keys(argv);
+
+  if (!(argvKeys.includes("json") || argvKeys.includes("stdout") || argvKeys.includes("html"))) {
+    logError("Error: You should choose an option, such as --html, --json or --stdout.");
     logError(`Check all the options with: ${COMMAND} --help`);
     process.exit(-1);
   }
@@ -141,12 +148,29 @@ const processOutput = (stats: any, argv: any) => {
         process.exit(-1);
       }
     });
+
+  if (argv.html) {
+    writeFile(argv.html, generateHTMLReport(stats), (error) => {
+      // TODO: Minify it with prettier
+      if (error) {
+        logError(error.message);
+        process.exit(-1);
+      }
+    });
+    logMsg(`Stats report generated and saved to ${argv.html}`);
+  }
 };
 
 const getArgs = () =>
   yargs
     .usage(`${APP_DESC}\n`)
     .usage(`Usage: ${COMMAND} [options]`)
+    .option("html", { type: "string", default: "git-stats.html" })
+    .alias("l", "html")
+    .nargs(".", 1)
+    .describe("l", "Saves a HTML stats report")
+    .example(`${COMMAND}`, "save report to git-stats.html")
+    .example(`${COMMAND} [--html | -l] file.html`, "save report to file.html")
     .option("json", { type: "string" })
     .alias("j", "json")
     .nargs("j", 1)
@@ -158,7 +182,7 @@ const getArgs = () =>
     .example(`${COMMAND} --stdout`, "prints to stdout")
     .option("minify", { type: "boolean" })
     .alias("m", "minify")
-    .describe("m", "JSON or stdout output is minified")
+    .describe("m", "output is minified")
     .example(`${COMMAND} --stdout --minify`, "prints to stdout minified")
     .help("h")
     .alias("h", "help")
