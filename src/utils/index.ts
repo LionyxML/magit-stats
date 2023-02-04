@@ -30,3 +30,6 @@ export const checkIsInsideGitDir = () =>
 
 // HACK: maxBuffer undefined is not documented and may stop working out of nowhere
 export const getGitLog = () => execSync(GIT_LOG_CMD, { maxBuffer: undefined });
+
+export const weekDayName = (numDay: number): string =>
+  ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][numDay];
