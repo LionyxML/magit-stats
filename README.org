@@ -1,13 +1,54 @@
 #+TITLE: magit-stats
 #+AUTHOR: Rahul M. Juliato
+#+EMAIL: rahul.juliato@gmail.com
+#+OPTIONS: toc:nil
+
+* magit-stats
+** What is this package?
+A very early attempt (still under development) a git statistics report
+generator that can be called from inside Emacs, hopefully from magit.
+
+** Requirements
+You need to have ~node@latest~ installed in your system and the ~npx~ tool.
+
+Just check if you have it issuing the command: ~npx --version~.
+
+** Basic Usage
+Navigate to your git folder and issue:
+#+BEGIN_SRC bash
+npx magit-stats
+#+END_SRC
+
+And that's it! A new file ~git-stats.html~ is generated with your
+repository statistics.
+
+** Advanced Usage
+You can get all options of this cli tool by issuing ~npx magit-stats --help~.
+
+#+BEGIN_SRC bash
+[magit-stats] - Your git repository statistics
+
+Usage: npx magit-stats  [options]
+
+Opções:
+  -l, --html     Saves a HTML stats report                              [string]
+  -j, --json     Saves JSON to file                                     [string]
+  -s, --stdout   Prints stats to stdout                                [boolean]
+  -m, --minify   Output is minified                                    [boolean]
+  -h, --help     Shows help                                            [boolean]
+  -v, --version  Shows version                                         [boolean]
+
+Exemplos:
+  npx magit-stats                           save report to git-stats.html
+  npx magit-stats  [--html | -l] file.html  save report to file.html
+  npx magit-stats  --json stats.json        save stats to JSON file
+  npx magit-stats  --stdout                 prints to stdout
+  npx magit-stats  --stdout --minify        prints to stdout minified
+#+END_SRC
 
 
-** What it is
-A very early attempt of writing some sort of git statistics in order
-to be called from Emacs, hopefully from magit.
 
-
-** Plan [71%]
+** TODOs [60%]
 - [X] Define git command to output log
 
 - [X] Detects if it is in a git folder
@@ -42,7 +83,17 @@ to be called from Emacs, hopefully from magit.
 
 - [X] Create exporter to JSON file
 
-- [ ] Create exporter do HTML
+- [ ] Create basic exporter do HTML
+
+- [ ] Add minified option to HTML
+
+- [ ] Fix locale translation for -h and -v options on --help
+
+- [ ] Add chart of commitsByWeekDay and commitsByAuthor to HTML
+
+- [ ] Add series chart to HTML
+
+- [ ] Work on UI/UX on HTML
 
 - [ ] Create exporter to org file
 
