@@ -39,7 +39,7 @@ export const generateHTMLReport = ({
     </div>
 
 
-    <table class="total-commits frosted">
+    <table class="total-commits">
         <tr><th class="first-column">Basics</th></tr>
         <tr><td>Total Commits</td><td>${totalCommits}</td></tr>
         <tr><td>Fist Commit</td><td>${firstCommit}</td></tr>
@@ -82,7 +82,7 @@ export const generateHTMLReport = ({
 
     </table>
 
-    <div class="footer frosted">
+    <div class="footer">
       <p>Report generated at: ${new Date()}</p>
     </div>
 
