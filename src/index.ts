@@ -47,8 +47,6 @@ const getGitLogStats = () => {
     })),
   )(gitLogOutput);
 
-  console.log(">>>", { commits });
-
   const totalCommits = commits.length;
 
   const authors = pipe(
