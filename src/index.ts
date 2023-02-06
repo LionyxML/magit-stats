@@ -1,7 +1,6 @@
 #! /usr/bin/env node
 
 import { writeFile } from "fs";
-import open from "open";
 import { format } from "prettier";
 import {
   applySpec,
@@ -18,8 +17,10 @@ import {
   sortWith,
   uniq,
   zipWith,
+  both,
 } from "ramda";
 import _yargs from "yargs";
+import open from "open";
 import { hideBin } from "yargs/helpers";
 import { APP_DESC, COMMAND, DAY_HOURS, WEEK_DAYS } from "./config";
 import {
@@ -64,7 +65,10 @@ const getGitLogStats = () => {
   const commitsByAuthor = pipe(
     map((author) => {
       const authorCommits = filter(
-        pathEq(["author", "name"], prop("name", author)),
+        both(
+          pathEq(["author", "email"], prop("email", author)),
+          pathEq(["author", "name"], prop("name", author)),
+        ),
         commits,
       ).length;
 

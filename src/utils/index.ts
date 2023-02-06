@@ -36,3 +36,6 @@ export const weekDayName = (numDay: number): string =>
 
 export const weekDayNameShort = (numDay: number): string =>
   ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][numDay];
+
+export const truncateString = (text: string, max: number): string =>
+  text.substr(0, max - 1) + (text.length > max ? "…" : "");

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>magit-stats - Repository Statistics</title>
+    <title>magit-stats - Repository Statistics 📈</title>
     <style>
       /*!
  * Bootstrap Reboot v5.0.0-beta3 (https://getbootstrap.com/)
@@ -450,6 +450,26 @@ progress {
   width: 100%;
   padding-top: 1.5rem;
   gap: 2rem;
+  padding-bottom: 2rem;
+}
+
+.title {
+  width: 70%;
+  text-align: center;
+}
+
+.sections-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.statistics {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  max-width: 1400px;
 }
 
 .first-column {
@@ -468,6 +488,13 @@ progress {
   min-width: 400px;
 }
 
+.limit-email {
+  max-width: 120px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .commits-by-day-hour {
   min-width: 400px;
 }
@@ -477,7 +504,45 @@ progress {
 }
 
 .footer {
-  margin-top: 3rem;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 1rem;
+  position: relative;
+  padding: 1rem;
+  cursor: pointer;
+  //  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  //  box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }
 
     </style>
@@ -487,33 +552,39 @@ progress {
 <div>
   <div class="container">
 
-    <div>
-      <h1>Repository Statistics</h1>
+    <div class="card title">
+      <h1>Repository Statistics 📈</h1>
     </div>
 
+    <div class="statistics">
 
-    <table class="total-commits">
-        <tr><th class="first-column">Basics</th></tr>
-        <tr><td>Total Commits</td><td>44</td></tr>
-        <tr><td>Fist Commit</td><td>Wed Jan 18 2023</td></tr>
-        <tr><td>Last Commit</td><td>Sat Feb 04 2023</td></tr>
-    </table>
+      <div class="card">
+        <table class="total-commits">
+            <tr><th class="first-column"><div class="sections-title">📟 General Info</div></th></tr>
+            <tr>
+              <td>
+                Commits
+                <span class="tooltip"> ℹ
+                <span class="tooltiptext">All commits on your folder,<br />
+                including other branches and merge commits.</span>
+                </span>
+              </td><td>45</td>
+            </tr>
+            <tr><td>Fist Commit</td><td>Wed Jan 18 2023</td></tr>
+            <tr><td>Last Commit</td><td>Sun Feb 05 2023</td></tr>
+        </table>
+      </div>
 
-    <table class="authors">
-        <tr><th class="first-column">Authors</th></tr>
-         <tr><td>LionyxML</td><td>rahul.juliato@gmail.com</td></tr><tr><td>Rahul M. Juliato</td><td>rahul.juliato@gmail.com</td></tr>
-    </table>
-
-<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" viewBox="0 0 400 300">
+      <div class="card">
+        <div class="sections-title">💻 Commits by Author</div>
+        <svg width="400" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" viewBox="0 0 400 300">
 <rect width="400" height="300" x="0" y="0" id="0" fill="none"></rect>
-<polyline points="212.8 239.1 214.9 253.9 229.9 253.9" fill="none" stroke="#5470c6"></polyline>
-<polyline points="187.2 60.9 185.1 46.1 170.1 46.1" fill="none" stroke="#91cc75"></polyline>
-<path d="M200 60A90 90 0 1 1 174.6 63.6L200 150Z" fill="#5470c6" transform-origin="200px 150px" class="zr0-cls-0"></path>
-<path d="M174.6 63.6A90 90 0 0 1 200 60L200 150Z" fill="#91cc75" transform-origin="200px 150px" class="zr0-cls-1"></path>
-<text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" transform="translate(234.9431 253.9313)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">LionyxML</text>
-<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" xml:space="preserve" transform="translate(165.0569 46.0687)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">Rahul M. Juliato</text>
-<path d="M-5 -5l163.4 0l0 28l-163.4 0Z" transform="translate(5 5)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#ccc" stroke-width="0"></path>
-<text dominant-baseline="central" text-anchor="start" style="font-size:18px;font-family:sans-serif;font-weight:bold;" xml:space="preserve" y="9" transform="translate(5 5)" fill="#464646">Commits by Author</text>
+<polyline points="210.4 224.3 212.5 239.1 227.5 239.1" fill="none" stroke="#5470c6"></polyline>
+<polyline points="189.6 75.7 187.5 60.9 172.5 60.9" fill="none" stroke="#91cc75"></polyline>
+<path d="M200 75A75 75 0 1 1 179.3 77.9L200 150Z" fill="#5470c6" transform-origin="200px 150px" class="zr0-cls-0"></path>
+<path d="M179.3 77.9A75 75 0 0 1 200 75L200 150Z" fill="#91cc75" transform-origin="200px 150px" class="zr0-cls-1"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" transform="translate(232.5256 239.1241)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">LionyxML</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" xml:space="preserve" transform="translate(167.4744 60.8759)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">Rahul M. Jul…</text>
 <style >&lt;![CDATA[
 .zr0-cls-0 {
 animation:zr0-ani-0 1s cubic-bezier(0.65,0,0.35,1) both;
@@ -541,8 +612,11 @@ transform:scale(0,0);
 
 </style>
 </svg>
+      </div>
 
-<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" viewBox="0 0 400 300">
+      <div class="card">
+        <div class="sections-title">🕐 Commits by Day Hour</div>
+        <svg width="400" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" viewBox="0 0 400 300">
 <rect width="400" height="300" x="0" y="0" id="0" fill="none"></rect>
 <path d="M40 230.5L360 230.5" fill="none" stroke="#E0E6F1"></path>
 <path d="M40 205.5L360 205.5" fill="none" stroke="#E0E6F1"></path>
@@ -633,9 +707,7 @@ transform:scale(0,0);
 <path d="M308.7 230l9.2 0l0 -48.6l-9.2 0Z" fill="#5470c6" class="zr1-cls-9"></path>
 <path d="M322.1 230l9.2 0l0 -24.3l-9.2 0Z" fill="#5470c6" class="zr1-cls-10"></path>
 <path d="M335.4 230l9.2 0l0 -72.9l-9.2 0Z" fill="#5470c6" class="zr1-cls-11"></path>
-<path d="M348.7 230l9.2 0l0 -97.1l-9.2 0Z" fill="#5470c6" class="zr1-cls-12"></path>
-<path d="M-5 -5l186.2 0l0 28l-186.2 0Z" transform="translate(5 5)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#ccc" stroke-width="0"></path>
-<text dominant-baseline="central" text-anchor="start" style="font-size:18px;font-family:sans-serif;font-weight:bold;" xml:space="preserve" y="9" transform="translate(5 5)" fill="#464646">Commits by Day Hour</text>
+<path d="M348.7 230l9.2 0l0 -121.4l-9.2 0Z" fill="#5470c6" class="zr1-cls-12"></path>
 <style >&lt;![CDATA[
 .zr1-cls-0 {
 animation:zr1-ani-0 1s cubic-bezier(0.65,0,0.35,1) both;
@@ -777,22 +849,26 @@ d:path(&quot;M335.4 230l9.2 0l0 -72.9l-9.2 0Z&quot;);
 d:path(&quot;M348.7 230l9.2 0l0 0l-9.2 0Z&quot;);
 }
 100% {
-d:path(&quot;M348.7 230l9.2 0l0 -97.1l-9.2 0Z&quot;);
+d:path(&quot;M348.7 230l9.2 0l0 -121.4l-9.2 0Z&quot;);
 }
 }
 ]]&gt;
 
 </style>
 </svg>
+      </div>
 
-<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" viewBox="0 0 400 300">
+      <div class="card">
+        <div class="sections-title">📅 Commits by Weekday</div>
+        <svg width="400" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" viewBox="0 0 400 300">
 <rect width="400" height="300" x="0" y="0" id="0" fill="none"></rect>
 <path d="M40 230.5L360 230.5" fill="none" stroke="#E0E6F1"></path>
-<path d="M40 201.5L360 201.5" fill="none" stroke="#E0E6F1"></path>
-<path d="M40 173.5L360 173.5" fill="none" stroke="#E0E6F1"></path>
-<path d="M40 145.5L360 145.5" fill="none" stroke="#E0E6F1"></path>
-<path d="M40 116.5L360 116.5" fill="none" stroke="#E0E6F1"></path>
-<path d="M40 88.5L360 88.5" fill="none" stroke="#E0E6F1"></path>
+<path d="M40 205.5L360 205.5" fill="none" stroke="#E0E6F1"></path>
+<path d="M40 181.5L360 181.5" fill="none" stroke="#E0E6F1"></path>
+<path d="M40 157.5L360 157.5" fill="none" stroke="#E0E6F1"></path>
+<path d="M40 133.5L360 133.5" fill="none" stroke="#E0E6F1"></path>
+<path d="M40 108.5L360 108.5" fill="none" stroke="#E0E6F1"></path>
+<path d="M40 84.5L360 84.5" fill="none" stroke="#E0E6F1"></path>
 <path d="M40 60.5L360 60.5" fill="none" stroke="#E0E6F1"></path>
 <path d="M40 230.5L360 230.5" fill="none" stroke="#6E7079" stroke-linecap="round"></path>
 <path d="M40.5 230L40.5 235" fill="none" stroke="#6E7079"></path>
@@ -804,12 +880,13 @@ d:path(&quot;M348.7 230l9.2 0l0 -97.1l-9.2 0Z&quot;);
 <path d="M314.5 230L314.5 235" fill="none" stroke="#6E7079"></path>
 <path d="M360.5 230L360.5 235" fill="none" stroke="#6E7079"></path>
 <text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(32 230)" fill="#6E7079">0</text>
-<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(32 201.6667)" fill="#6E7079">3</text>
-<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(32 173.3333)" fill="#6E7079">6</text>
-<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(32 145)" fill="#6E7079">9</text>
-<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(32 116.6667)" fill="#6E7079">12</text>
-<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(32 88.3333)" fill="#6E7079">15</text>
-<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(32 60)" fill="#6E7079">18</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(32 205.7143)" fill="#6E7079">3</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(32 181.4286)" fill="#6E7079">6</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(32 157.1429)" fill="#6E7079">9</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(32 132.8571)" fill="#6E7079">12</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(32 108.5714)" fill="#6E7079">15</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(32 84.2857)" fill="#6E7079">18</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(32 60)" fill="#6E7079">21</text>
 <text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:sans-serif;" y="6" transform="translate(62.8571 238)" fill="#6E7079">Sun</text>
 <text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:sans-serif;" y="6" transform="translate(108.5714 238)" fill="#6E7079">Mon</text>
 <text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:sans-serif;" y="6" transform="translate(154.2857 238)" fill="#6E7079">Tue</text>
@@ -817,15 +894,13 @@ d:path(&quot;M348.7 230l9.2 0l0 -97.1l-9.2 0Z&quot;);
 <text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:sans-serif;" y="6" transform="translate(245.7143 238)" fill="#6E7079">Thu</text>
 <text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:sans-serif;" y="6" transform="translate(291.4286 238)" fill="#6E7079">Fri</text>
 <text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:sans-serif;" y="6" transform="translate(337.1429 238)" fill="#6E7079">Sat</text>
-<path d="M47.1 230l31.5 0l0 -170l-31.5 0Z" fill="#5470c6" class="zr2-cls-0"></path>
-<path d="M92.8 230l31.5 0l0 -28.3l-31.5 0Z" fill="#5470c6" class="zr2-cls-1"></path>
-<path d="M138.5 230l31.5 0l0 -9.4l-31.5 0Z" fill="#5470c6" class="zr2-cls-2"></path>
-<path d="M184.2 230l31.5 0l0 -9.4l-31.5 0Z" fill="#5470c6" class="zr2-cls-3"></path>
-<path d="M229.9 230l31.5 0l0 -37.8l-31.5 0Z" fill="#5470c6" class="zr2-cls-4"></path>
-<path d="M275.7 230l31.5 0l0 -94.4l-31.5 0Z" fill="#5470c6" class="zr2-cls-5"></path>
-<path d="M321.4 230l31.5 0l0 -66.1l-31.5 0Z" fill="#5470c6" class="zr2-cls-6"></path>
-<path d="M-5 -5l185.3 0l0 28l-185.3 0Z" transform="translate(5 5)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#ccc" stroke-width="0"></path>
-<text dominant-baseline="central" text-anchor="start" style="font-size:18px;font-family:sans-serif;font-weight:bold;" xml:space="preserve" y="9" transform="translate(5 5)" fill="#464646">Commits by Weekday</text>
+<path d="M47.1 230l31.5 0l0 -153.8l-31.5 0Z" fill="#5470c6" class="zr2-cls-0"></path>
+<path d="M92.8 230l31.5 0l0 -24.3l-31.5 0Z" fill="#5470c6" class="zr2-cls-1"></path>
+<path d="M138.5 230l31.5 0l0 -8.1l-31.5 0Z" fill="#5470c6" class="zr2-cls-2"></path>
+<path d="M184.2 230l31.5 0l0 -8.1l-31.5 0Z" fill="#5470c6" class="zr2-cls-3"></path>
+<path d="M229.9 230l31.5 0l0 -32.4l-31.5 0Z" fill="#5470c6" class="zr2-cls-4"></path>
+<path d="M275.7 230l31.5 0l0 -81l-31.5 0Z" fill="#5470c6" class="zr2-cls-5"></path>
+<path d="M321.4 230l31.5 0l0 -56.7l-31.5 0Z" fill="#5470c6" class="zr2-cls-6"></path>
 <style >&lt;![CDATA[
 .zr2-cls-0 {
 animation:zr2-ani-0 1s cubic-bezier(0.65,0,0.35,1) both;
@@ -853,7 +928,7 @@ animation:zr2-ani-6 1s cubic-bezier(0.65,0,0.35,1) both;
 d:path(&quot;M47.1 230l31.5 0l0 0l-31.5 0Z&quot;);
 }
 100% {
-d:path(&quot;M47.1 230l31.5 0l0 -170l-31.5 0Z&quot;);
+d:path(&quot;M47.1 230l31.5 0l0 -153.8l-31.5 0Z&quot;);
 }
 }
 @keyframes zr2-ani-1 {
@@ -861,7 +936,7 @@ d:path(&quot;M47.1 230l31.5 0l0 -170l-31.5 0Z&quot;);
 d:path(&quot;M92.8 230l31.5 0l0 0l-31.5 0Z&quot;);
 }
 100% {
-d:path(&quot;M92.8 230l31.5 0l0 -28.3l-31.5 0Z&quot;);
+d:path(&quot;M92.8 230l31.5 0l0 -24.3l-31.5 0Z&quot;);
 }
 }
 @keyframes zr2-ani-2 {
@@ -869,7 +944,7 @@ d:path(&quot;M92.8 230l31.5 0l0 -28.3l-31.5 0Z&quot;);
 d:path(&quot;M138.5 230l31.5 0l0 0l-31.5 0Z&quot;);
 }
 100% {
-d:path(&quot;M138.5 230l31.5 0l0 -9.4l-31.5 0Z&quot;);
+d:path(&quot;M138.5 230l31.5 0l0 -8.1l-31.5 0Z&quot;);
 }
 }
 @keyframes zr2-ani-3 {
@@ -877,7 +952,7 @@ d:path(&quot;M138.5 230l31.5 0l0 -9.4l-31.5 0Z&quot;);
 d:path(&quot;M184.2 230l31.5 0l0 0l-31.5 0Z&quot;);
 }
 100% {
-d:path(&quot;M184.2 230l31.5 0l0 -9.4l-31.5 0Z&quot;);
+d:path(&quot;M184.2 230l31.5 0l0 -8.1l-31.5 0Z&quot;);
 }
 }
 @keyframes zr2-ani-4 {
@@ -885,7 +960,7 @@ d:path(&quot;M184.2 230l31.5 0l0 -9.4l-31.5 0Z&quot;);
 d:path(&quot;M229.9 230l31.5 0l0 0l-31.5 0Z&quot;);
 }
 100% {
-d:path(&quot;M229.9 230l31.5 0l0 -37.8l-31.5 0Z&quot;);
+d:path(&quot;M229.9 230l31.5 0l0 -32.4l-31.5 0Z&quot;);
 }
 }
 @keyframes zr2-ani-5 {
@@ -893,7 +968,7 @@ d:path(&quot;M229.9 230l31.5 0l0 -37.8l-31.5 0Z&quot;);
 d:path(&quot;M275.7 230l31.5 0l0 0l-31.5 0Z&quot;);
 }
 100% {
-d:path(&quot;M275.7 230l31.5 0l0 -94.4l-31.5 0Z&quot;);
+d:path(&quot;M275.7 230l31.5 0l0 -81l-31.5 0Z&quot;);
 }
 }
 @keyframes zr2-ani-6 {
@@ -901,33 +976,53 @@ d:path(&quot;M275.7 230l31.5 0l0 -94.4l-31.5 0Z&quot;);
 d:path(&quot;M321.4 230l31.5 0l0 0l-31.5 0Z&quot;);
 }
 100% {
-d:path(&quot;M321.4 230l31.5 0l0 -66.1l-31.5 0Z&quot;);
+d:path(&quot;M321.4 230l31.5 0l0 -56.7l-31.5 0Z&quot;);
 }
 }
 ]]&gt;
 
 </style>
 </svg>
+      </div>
 
-    <table class="commits-by-author">
-        <tr><th class="first-column">Authors</th><th>Commits</th></tr>
-        <tr><td>LionyxML</td><td>42</td><td>95.45%</td></tr><tr><td>Rahul M. Juliato</td><td>2</td><td>4.55%</td></tr>
-    </table>
 
-    <table class="commits-by-day-hour">
-    <tr><th class="first-column">Hour</th><th>Commits</th></tr>
-    <tr><td>0</td><td>6</td></tr><tr><td>1</td><td>6</td></tr><tr><td>2</td><td>1</td></tr><tr><td>3</td><td>0</td></tr><tr><td>4</td><td>0</td></tr><tr><td>5</td><td>0</td></tr><tr><td>6</td><td>0</td></tr><tr><td>7</td><td>0</td></tr><tr><td>8</td><td>1</td></tr><tr><td>9</td><td>0</td></tr><tr><td>10</td><td>0</td></tr><tr><td>11</td><td>0</td></tr><tr><td>12</td><td>7</td></tr><tr><td>13</td><td>0</td></tr><tr><td>14</td><td>7</td></tr><tr><td>15</td><td>0</td></tr><tr><td>16</td><td>0</td></tr><tr><td>17</td><td>1</td></tr><tr><td>18</td><td>2</td></tr><tr><td>19</td><td>3</td></tr><tr><td>20</td><td>2</td></tr><tr><td>21</td><td>1</td></tr><tr><td>22</td><td>3</td></tr><tr><td>23</td><td>4</td></tr>
-    </table>
+      <div class="card">
+        <table class="authors">
+            <tr><th class="first-column">Authors</th></tr>
+             <tr><td>LionyxML</td><td class="limit-email">rahul.juliato@gmail.com</td></tr><tr><td>Rahul M. Juliato</td><td class="limit-email">rahul.juliato@gmail.com</td></tr>
+        </table>
+      </div>
 
-    <table class="commits-by-week-day">
-    <tr><th class="first-column">WeekDay</th><th>Commits</th></tr>
-    <tr><td>Sunday</td><td>18</td></tr><tr><td>Monday</td><td>3</td></tr><tr><td>Tuesday</td><td>1</td></tr><tr><td>Wednesday</td><td>1</td></tr><tr><td>Thursday</td><td>4</td></tr><tr><td>Friday</td><td>10</td></tr><tr><td>Saturday</td><td>7</td></tr>
+      <div class="card">
+        <table class="commits-by-author">
+            <tr><th class="first-column">Authors</th><th>Commits</th></tr>
+           <tr><td>LionyxML</td>
+                  <td class="limit-email">rahul.juliato@gmail.com</td>
+                  <td>43</td><td>95.56%</td></tr><tr><td>Rahul M. Juliato</td>
+                  <td class="limit-email">rahul.juliato@gmail.com</td>
+                  <td>2</td><td>4.44%</td></tr>
+        </table>
+      </div>
 
-    </table>
+      <div class="card">
+        <table class="commits-by-day-hour">
+        <tr><th class="first-column">Hour</th><th>Commits</th></tr>
+        <tr><td>0</td><td>6</td></tr><tr><td>1</td><td>6</td></tr><tr><td>2</td><td>1</td></tr><tr><td>3</td><td>0</td></tr><tr><td>4</td><td>0</td></tr><tr><td>5</td><td>0</td></tr><tr><td>6</td><td>0</td></tr><tr><td>7</td><td>0</td></tr><tr><td>8</td><td>1</td></tr><tr><td>9</td><td>0</td></tr><tr><td>10</td><td>0</td></tr><tr><td>11</td><td>0</td></tr><tr><td>12</td><td>7</td></tr><tr><td>13</td><td>0</td></tr><tr><td>14</td><td>7</td></tr><tr><td>15</td><td>0</td></tr><tr><td>16</td><td>0</td></tr><tr><td>17</td><td>1</td></tr><tr><td>18</td><td>2</td></tr><tr><td>19</td><td>3</td></tr><tr><td>20</td><td>2</td></tr><tr><td>21</td><td>1</td></tr><tr><td>22</td><td>3</td></tr><tr><td>23</td><td>5</td></tr>
+        </table>
+      </div>
 
-    <div class="footer">
-      <p>Report generated at: Sun Feb 05 2023 23:46:17 GMT-0300 (Horário Padrão de Brasília)
-      by <a href="https://github.com/LionyxML/magit-stats" target="_blank">[magit-stats]</a></p>
+      <div class="card">
+        <table class="commits-by-week-day">
+        <tr><th class="first-column">WeekDay</th><th>Commits</th></tr>
+        <tr><td>Sunday</td><td>19</td></tr><tr><td>Monday</td><td>3</td></tr><tr><td>Tuesday</td><td>1</td></tr><tr><td>Wednesday</td><td>1</td></tr><tr><td>Thursday</td><td>4</td></tr><tr><td>Friday</td><td>10</td></tr><tr><td>Saturday</td><td>7</td></tr>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="card">
+        🤖 Report generated at: Mon Feb 06 2023 20:31:17 GMT-0300 (Horário Padrão de Brasília)
+        by <a href="https://github.com/LionyxML/magit-stats" target="_blank">[magit-stats]</a>
     </div>
 
   </div>

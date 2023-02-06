@@ -1,6 +1,6 @@
 import * as echarts from "echarts";
 import { applySpec, prop } from "ramda";
-import { weekDayNameShort } from "../utils";
+import { weekDayNameShort, truncateString } from "../utils";
 
 // TODO: proper typing
 interface chartProps {
@@ -18,17 +18,18 @@ export const renderChart = ({ data, chartType }: chartProps) => {
     });
 
     chart.setOption({
-      title: { text: "Commits by Author" },
       series: [
         {
           type: "pie",
+          avoidLabelOverlap: false,
           data: data.map(
             applySpec({
               value: prop("authorCommits"),
-              name: prop("name"),
+              name: (entry) => truncateString(prop("name", entry), 13),
+              id: prop("email"),
             }),
           ),
-          radius: "60%",
+          radius: "50%",
         },
       ],
     });
@@ -49,7 +50,6 @@ export const renderChart = ({ data, chartType }: chartProps) => {
     });
 
     chart.setOption({
-      title: { text: "Commits by Day Hour" },
       xAxis: {
         type: "category",
         data: data.map((entry: any) => entry.hour),
@@ -85,7 +85,6 @@ export const renderChart = ({ data, chartType }: chartProps) => {
     });
 
     chart.setOption({
-      title: { text: "Commits by Weekday" },
       xAxis: {
         type: "category",
         data: data.map((entry: any) => weekDayNameShort(entry.weekDay)),
