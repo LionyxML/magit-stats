@@ -5,8 +5,10 @@
 
 ## What is this package?
 
-A very early attempt (still under development) a git statistics report
+A (still under development) git statistics report
 generator that can be called from inside Emacs, hopefully from magit.
+
+![img](./doc/demo.png)
 
 
 ## Requirements
@@ -23,7 +25,7 @@ Navigate to your git folder and issue:
     npx magit-stats
 
 And that's it! A new file `git-stats.html` is generated with your
-repository statistics.
+repository statistics and will be automatically opened.
 
 
 ## Advanced Usage
@@ -36,11 +38,12 @@ You can get all options of this cli tool by issuing `npx magit-stats --help`.
     
     Opções:
       -l, --html     Saves a HTML stats report                              [string]
+          --no-open  Does not open the generate HTML file                  [boolean]
       -j, --json     Saves JSON to file                                     [string]
       -s, --stdout   Prints stats to stdout                                [boolean]
-      -m, --minify   Output is minified                                    [boolean]
-      -h, --help     Shows help                                            [boolean]
-      -v, --version  Shows version                                         [boolean]
+      -m, --minify   JSON output is minified                               [boolean]
+      -h, --help     Show help                                             [boolean]
+      -v, --version  Show app version                                      [boolean]
     
     Exemplos:
       npx magit-stats                           save report to git-stats.html
@@ -50,7 +53,7 @@ You can get all options of this cli tool by issuing `npx magit-stats --help`.
       npx magit-stats  --stdout --minify        prints to stdout minified
 
 
-## TODOs <code>[60%]</code>
+## TODOs <code>[69%]</code>
 
 -   [X] Define git command to output log
 
@@ -86,13 +89,13 @@ You can get all options of this cli tool by issuing `npx magit-stats --help`.
 
 -   [X] Create exporter to JSON file
 
--   [ ] Create basic exporter do HTML
+-   [X] Create basic exporter do HTML
 
 -   [ ] Add minified option to HTML
 
--   [ ] Fix locale translation for -h and -v options on &#x2013;help
+-   [X] Fix locale translation for -h and -v options on &#x2013;help
 
--   [ ] Add chart of commitsByWeekDay and commitsByAuthor to HTML
+-   [X] Add chart of commitsByWeekDay and commitsByAuthor to HTML
 
 -   [ ] Add series chart to HTML
 

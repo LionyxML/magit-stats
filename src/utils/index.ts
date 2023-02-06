@@ -33,3 +33,6 @@ export const getGitLog = () => execSync(GIT_LOG_CMD, { maxBuffer: undefined });
 
 export const weekDayName = (numDay: number): string =>
   ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][numDay];
+
+export const weekDayNameShort = (numDay: number): string =>
+  ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][numDay];

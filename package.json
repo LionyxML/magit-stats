@@ -1,6 +1,6 @@
 {
   "name": "magit-stats",
-  "version": "1.0.14-dev",
+  "version": "1.0.15-dev",
   "description": "Your git repository statistics",
   "main": "./src/index.ts",
   "type": "module",
@@ -37,6 +37,8 @@
   "homepage": "https://github.com/LionyxML/magit-stats#readme",
   "dependencies": {
     "@types/yargs": "^17.0.20",
+    "echarts": "^5.4.1",
+    "open": "^8.4.0",
     "ramda": "^0.28.0",
     "yargs": "^17.6.2"
   },

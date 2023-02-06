@@ -5,8 +5,10 @@
 
 * magit-stats
 ** What is this package?
-A very early attempt (still under development) a git statistics report
+A (still under development) git statistics report
 generator that can be called from inside Emacs, hopefully from magit.
+
+[[./doc/demo.png]]
 
 ** Requirements
 You need to have ~node@latest~ installed in your system and the ~npx~ tool.
@@ -20,7 +22,7 @@ npx magit-stats
 #+END_SRC
 
 And that's it! A new file ~git-stats.html~ is generated with your
-repository statistics.
+repository statistics and will be automatically opened.
 
 ** Advanced Usage
 You can get all options of this cli tool by issuing ~npx magit-stats --help~.
@@ -32,11 +34,12 @@ Usage: npx magit-stats  [options]
 
 Opções:
   -l, --html     Saves a HTML stats report                              [string]
+      --no-open  Does not open the generate HTML file                  [boolean]
   -j, --json     Saves JSON to file                                     [string]
   -s, --stdout   Prints stats to stdout                                [boolean]
-  -m, --minify   Output is minified                                    [boolean]
-  -h, --help     Shows help                                            [boolean]
-  -v, --version  Shows version                                         [boolean]
+  -m, --minify   JSON output is minified                               [boolean]
+  -h, --help     Show help                                             [boolean]
+  -v, --version  Show app version                                      [boolean]
 
 Exemplos:
   npx magit-stats                           save report to git-stats.html
@@ -48,7 +51,7 @@ Exemplos:
 
 
 
-** TODOs [60%]
+** TODOs [69%]
 - [X] Define git command to output log
 
 - [X] Detects if it is in a git folder
@@ -83,13 +86,13 @@ Exemplos:
 
 - [X] Create exporter to JSON file
 
-- [ ] Create basic exporter do HTML
+- [X] Create basic exporter do HTML
 
 - [ ] Add minified option to HTML
 
-- [ ] Fix locale translation for -h and -v options on --help
+- [X] Fix locale translation for -h and -v options on --help
 
-- [ ] Add chart of commitsByWeekDay and commitsByAuthor to HTML
+- [X] Add chart of commitsByWeekDay and commitsByAuthor to HTML
 
 - [ ] Add series chart to HTML
 

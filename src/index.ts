@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 
 import { writeFile } from "fs";
+import open from "open";
 import { format } from "prettier";
 import {
   applySpec,
@@ -147,8 +148,9 @@ const processOutput = (stats: any, argv: any) => {
       }
     });
 
+  const htmlReport = generateHTMLReport(stats);
   if (argv.html) {
-    writeFile(argv.html, generateHTMLReport(stats), (error) => {
+    writeFile(argv.html, htmlReport, (error) => {
       // TODO: Minify it with prettier
       if (error) {
         logError(error.message);
@@ -156,6 +158,8 @@ const processOutput = (stats: any, argv: any) => {
       }
     });
     logMsg(`Stats report generated and saved to ${argv.html}`);
+
+    if (!(argv.open === false)) open(argv.html);
   }
 };
 
@@ -169,6 +173,8 @@ const getArgs = () =>
     .describe("l", "Saves a HTML stats report")
     .example(`${COMMAND}`, "save report to git-stats.html")
     .example(`${COMMAND} [--html | -l] file.html`, "save report to file.html")
+    .option("no-open", { type: "boolean" })
+    .describe("no-open", "Does not open the generate HTML file")
     .option("json", { type: "string" })
     .alias("j", "json")
     .nargs("j", 1)
@@ -180,11 +186,13 @@ const getArgs = () =>
     .example(`${COMMAND} --stdout`, "prints to stdout")
     .option("minify", { type: "boolean" })
     .alias("m", "minify")
-    .describe("m", "output is minified")
+    .describe("m", "JSON output is minified")
     .example(`${COMMAND} --stdout --minify`, "prints to stdout minified")
     .help("h")
     .alias("h", "help")
-    .alias("v", "version").argv;
+    .describe("h", "Show help")
+    .alias("v", "version")
+    .describe("version", "Show app version").argv;
 
 const main = () => {
   checkIsInsideGitDir();

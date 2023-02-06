@@ -1,6 +1,7 @@
 // prettier-ignore
 
 import { getGitLogStatsType } from "../";
+import { renderChart } from "../chartGenerator";
 import { weekDayName } from "../utils";
 import { readFileSync } from "fs";
 
@@ -53,6 +54,12 @@ export const generateHTMLReport = ({
            .join("")}
     </table>
 
+${renderChart({ data: commitsByAuthor, chartType: "COMMITS_BY_AUTHOR" })}
+
+${renderChart({ data: commitsByDayHour, chartType: "COMMITS_BY_HOUR" })}
+
+${renderChart({ data: commitsByWeekDay, chartType: "COMMITS_BY_WEEKDAY" })}
+
     <table class="commits-by-author">
         <tr><th class="first-column">Authors</th><th>Commits</th></tr>
         ${commitsByAuthor
@@ -83,7 +90,8 @@ export const generateHTMLReport = ({
     </table>
 
     <div class="footer">
-      <p>Report generated at: ${new Date()}</p>
+      <p>Report generated at: ${new Date()}
+      by <a href="https://github.com/LionyxML/magit-stats" target="_blank">[magit-stats]</a></p>
     </div>
 
   </div>

@@ -30,7 +30,7 @@ const config = {
     ],
   },
   resolve: {
-    extensions: [".ts"],
+    extensions: [".ts", ".js"],
   },
 };
 
