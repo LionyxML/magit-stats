@@ -142,18 +142,14 @@ const processOutput = (stats: any, argv: any) => {
 
   const isMinified = argv.minify;
 
-  if (argv.stdout) logMsg(JSON.stringify(stats, null, isMinified ? 0 : 2));
-
-  if (argv.json)
-    writeFile(argv.json, JSON.stringify(stats, null, isMinified ? 0 : 2), (error) => {
-      if (error) {
-        logError(error.message);
-        process.exit(-1);
-      }
-    });
-
   const htmlReport = generateHTMLReport(stats);
-  if (argv.html) {
+
+  if (argv.html && argv.stdout && argv.json !== "") {
+    logMsg(htmlReport);
+    return;
+  }
+
+  if (argv.html && !argv.stdout && argv.json !== "") {
     writeFile(argv.html, htmlReport, (error) => {
       // TODO: Minify it with prettier
       if (error) {
@@ -161,10 +157,22 @@ const processOutput = (stats: any, argv: any) => {
         process.exit(-1);
       }
     });
-    logMsg(`Stats report generated and saved to ${argv.html}`);
-
     if (!(argv.open === false)) open(argv.html);
+    return;
   }
+
+  if (argv.stdout) logMsg(JSON.stringify(stats, null, isMinified ? 0 : 2));
+
+  writeFile(
+    argv.json === "" ? "git-stats.json" : argv.json,
+    JSON.stringify(stats, null, isMinified ? 0 : 2),
+    (error) => {
+      if (error) {
+        logError(error.message);
+        process.exit(-1);
+      }
+    },
+  );
 };
 
 const getArgs = () =>
@@ -181,7 +189,7 @@ const getArgs = () =>
     .describe("no-open", "Does not open the generate HTML file")
     .option("json", { type: "string" })
     .alias("j", "json")
-    .nargs("j", 1)
+    .nargs("j", 0)
     .describe("j", "Saves JSON to file")
     .example(`${COMMAND} --json stats.json`, "save stats to JSON file")
     .option("stdout", { type: "boolean" })

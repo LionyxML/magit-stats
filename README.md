@@ -5,9 +5,14 @@
 
 ## What is this package?
 
-A (still under development) git statistics report
-generator that can be called from inside Emacs, hopefully from magit.
+A (still under development) git statistics report generator that can
+be use as an individual CLI Tool or called from inside Emacs,
+hopefully from magit.
 
+**IMPORTANT: this is a node npx package, if you wan't to use it inside EMACS
+scroll to the "Emacs Usage" section bellow.**
+
+Here's a demo of the report:
 ![img](./doc/demo.png)
 
 
@@ -24,7 +29,7 @@ Navigate to your git folder and issue:
 
     npx magit-stats
 
-And that's it! A new file `git-stats.html` is generated with your
+And that's it! A new `git-stats.html` file is generated with your
 repository statistics and will be automatically opened.
 
 
@@ -53,7 +58,22 @@ You can get all options of this cli tool by issuing `npx magit-stats --help`.
       npx magit-stats  --stdout --minify        prints to stdout minified
 
 
-## TODOs <code>[69%]</code>
+## Emacs Usage
+
+`NOTE: NOT YET AVAILABLE FROM MELPA`
+Install it from [MELPA](<https://melpa.org/#/magit-stats>) and add to your \`.emacs\` file:
+
+    (require 'magit-stats)
+
+Then open a file that is inside a git repository and call `magit-stats`, like `M-x magit-stats RET`.
+
+Choose an option generate your report!
+
+Demo:
+![img](./doc/demo_emacs.png)
+
+
+## TODOs <code>[76%]</code>
 
 -   [X] Define git command to output log
 
@@ -99,11 +119,11 @@ You can get all options of this cli tool by issuing `npx magit-stats --help`.
 
 -   [ ] Add series chart to HTML
 
--   [ ] Work on UI/UX on HTML
+-   [X] Work on UI/UX on HTML
 
 -   [ ] Create exporter to org file
 
 -   [ ] Create exporter to md file
 
--   [ ] Make elisp package that calls the node function passing the project folder as argument
+-   [X] Make elisp package that calls the node function
 
