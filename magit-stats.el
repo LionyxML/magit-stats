@@ -5,7 +5,7 @@
 ;; Version: 0.0.1
 ;; Keywords: vc, convenience
 ;; URL: https://github.com/LionyxML/magit-stats
-;; Package-Requires: ((emacs "24.4"))
+;; Package-Requires: ((emacs "25.1"))
 ;; SPDX-License-Identifier: GPL-2.0-or-later
 
 ;;; Commentary:
@@ -18,11 +18,6 @@
 ;; in your system (see: https://nodejs.org/en/ and
 ;; https://www.npmjs.com/package/npx)
 ;;
-;; NOTE: This is not related to official Emacs ~magit~, please do not
-;;       bother its creator who has been kind enough to point me on
-;;       the directions of developing a magit plugin (maybe this in
-;;       the future).
-;;
 ;; To enable magit-stats, install the package and add it to your load path:
 ;;     (require 'magit-stats)
 ;;
@@ -30,10 +25,12 @@
 ;;
 
 ;;; Code:
+(require 'shr)
+
 (defgroup magit-stats nil
   "Generates GIT Repo Statistics Report."
   :group 'tools
-  :prefix "magit-stats-*")
+  :prefix "magit-stats-")
 
 (defcustom magit-stats-command-html-stdout "npx magit-stats --html --stdout"
   "Command to generate the HTML report to stdout."
@@ -50,44 +47,65 @@
   :group 'magit-stats
   :type 'string)
 
-(defun magit-stats ()
-  "Generate GIT Repository Statistics."
+(defcustom magit-stats-backends
+  '((?h magit-stats-in-buffer   "HTML report in a new buffer")
+    (?o magit-stats-with-viewer "Open HTML report with OS default viewer")
+    (?j magit-stats-json-buffer "JSON report data in a new buffer"))
+  "List of backends for the `magit-stats' command.
+Each entry is of form: (CHAR FN DESCRIPTION)"
+  :type 'list)
+
+;;;###autoload
+(defun magit-stats-in-buffer ()
+  "HTML report in a new buffer."
   (interactive)
-  (let ((choice (read-char-choice "
-[magit-stats] (A NON Official maybe future magit plugin)
+  (with-current-buffer (get-buffer-create "*magit-stats-stdout*")
+    (message "Loading...")
+    (erase-buffer)
+    (let ((process-status (call-process shell-file-name nil (current-buffer) nil shell-command-switch magit-stats-command-html-stdout)))
+      (if (= process-status 0)
+          (progn
+            (shr-render-buffer (current-buffer))
+            (pop-to-buffer (current-buffer))
+            (kill-buffer "*magit-stats-stdout*")
+            (message "Loaded!"))
+        (error "Error while loading stats!")))))
 
-Choose an option:
+;;;###autoload
+(defun magit-stats-with-viewer ()
+  "Open HTML report with OS default viewer."
+  (interactive)
+  (message "Loading...")
+  (let ((process-status (call-process shell-file-name nil nil nil shell-command-switch magit-stats-command-html-open)))
+    (if (= process-status 0)
+        (message "Loaded!")
+      (error "Error while loading stats!"))))
 
-a - Generate HTML report to a new buffer
-b - Generate HTML report to a file and open on OS default viewer
-c - Save JSON report data to a new buffer
+;;;###autoload
+(defun magit-stats-json-buffer ()
+  "JSON report data in a new buffer."
+  (interactive)
+  (with-current-buffer (get-buffer-create "*magit-stats-stdout*")
+    (message "Loading...")
+    (erase-buffer)
+    (let ((process-status (call-process shell-file-name nil (current-buffer) nil shell-command-switch magit-stats-command-html-json-stdout)))
+      (if (= process-status 0)
+          (pop-to-buffer (current-buffer))
+        (error "Error while loading stats!")))
+    (message "Loaded!")))
 
-q - Quit
-" '(97 98 99 113))))
-    (cond
-     ((eq choice ?a)
-      (with-current-buffer (get-buffer-create "*magit-stats-stdout*")
-	(message "Loading...")
-        (erase-buffer)
-        (shell-command magit-stats-command-html-stdout (current-buffer))
-        (shr-render-buffer (current-buffer))
-        (pop-to-buffer (current-buffer))
-	(kill-buffer "*magit-stats-stdout*")
-	(message "Loaded!")))
-     ((eq choice ?b)
-      (message "Loading...")
-      (shell-command  magit-stats-command-html-open)
-      (message "Loaded!"))
-     ((eq choice ?c)
-      (with-current-buffer (get-buffer-create "*magit-stats-stdout*")
-	(message "Loading...")
-        (erase-buffer)
-        (shell-command magit-stats-command-html-json-stdout (current-buffer))
-        (pop-to-buffer (current-buffer))
-	(message "Loaded!")))
-
-     ((eq choice ?q)
-      (message "Quitting [magit-stats]")))))
+;;;###autoload
+(defun magit-stats (backend)
+  "Generate GIT Repository Statistics via BACKEND."
+  (interactive
+   (list (car (alist-get (read-char-choice
+                          (format "magit-stats backend (%s):\n%s"
+                                  (substitute-command-keys "\\[keyboard-quit] to quit")
+                                  (mapconcat (lambda (b) (format "%c - %s\n" (car b) (car (last b))))
+                                             magit-stats-backends))
+                          (mapcar #'car magit-stats-backends))
+                         magit-stats-backends))))
+  (if (functionp backend) (funcall backend) (user-error "Unknown backend: %s" backend)))
 
 (provide 'magit-stats)
 
