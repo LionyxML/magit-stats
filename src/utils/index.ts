@@ -1,4 +1,4 @@
-import { exec, execSync } from "child_process";
+import { execSync } from "child_process";
 import { addIndex, map } from "ramda";
 import { CHECK_GIT_DIR_CMD, GIT_LOG_CMD } from "../config";
 
@@ -20,16 +20,24 @@ export const generateDateObj = (dateRFC: string) => {
   };
 };
 
-export const checkIsInsideGitDir = () =>
-  exec(CHECK_GIT_DIR_CMD, (error) => {
-    if (error) {
-      logError(error.message);
-      process.exit(-1);
-    }
-  });
+export const checkIsInsideGitDir = () => {
+  try {
+    // HACK: maxBuffer undefined is not documented and may stop working out of nowhere
+    execSync(CHECK_GIT_DIR_CMD, { maxBuffer: undefined });
+  } catch {
+    process.exit(-1);
+  }
+  return;
+};
 
 // HACK: maxBuffer undefined is not documented and may stop working out of nowhere
-export const getGitLog = () => execSync(GIT_LOG_CMD, { maxBuffer: undefined });
+export const getGitLog = () => {
+  try {
+    return execSync(GIT_LOG_CMD, { maxBuffer: undefined });
+  } catch {
+    process.exit(-1);
+  }
+};
 
 export const weekDayName = (numDay: number): string =>
   ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][numDay];
