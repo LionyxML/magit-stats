@@ -32,21 +32,6 @@
   :group 'tools
   :prefix "magit-stats-")
 
-(defcustom magit-stats-command-html-stdout "npx magit-stats --html --stdout"
-  "Command to generate the HTML report to stdout."
-  :group 'magit-stats
-  :type 'string)
-
-(defcustom magit-stats-command-html-open "npx magit-stats"
-  "Command to generate the HTML report and open it."
-  :group 'magit-stats
-  :type 'string)
-
-(defcustom magit-stats-command-html-json-stdout "npx magit-stats --json --stdout"
-  "Command to generate the JSON report to stdout."
-  :group 'magit-stats
-  :type 'string)
-
 (defcustom magit-stats-backends
   '((?h magit-stats-in-buffer   "HTML report in a new buffer")
     (?o magit-stats-with-viewer "Open HTML report with OS default viewer")
@@ -62,7 +47,7 @@ Each entry is of form: (CHAR FN DESCRIPTION)"
   (with-current-buffer (get-buffer-create "*magit-stats-stdout*")
     (message "Loading...")
     (erase-buffer)
-    (let ((process-status (call-process shell-file-name nil (current-buffer) nil shell-command-switch magit-stats-command-html-stdout)))
+    (let ((process-status (call-process "npx" nil (get-buffer-create "*magit-stats-stdout*") nil "magit-stats" "--html" "--stdout")))
       (if (= process-status 0)
           (progn
             (shr-render-buffer (current-buffer))
@@ -76,7 +61,7 @@ Each entry is of form: (CHAR FN DESCRIPTION)"
   "Open HTML report with OS default viewer."
   (interactive)
   (message "Loading...")
-  (let ((process-status (call-process shell-file-name nil nil nil shell-command-switch magit-stats-command-html-open)))
+  (let ((process-status (call-process "npx" nil nil nil "magit-stats")))
     (if (= process-status 0)
         (message "Loaded!")
       (error "Error while loading stats!"))))
@@ -88,7 +73,7 @@ Each entry is of form: (CHAR FN DESCRIPTION)"
   (with-current-buffer (get-buffer-create "*magit-stats-stdout*")
     (message "Loading...")
     (erase-buffer)
-    (let ((process-status (call-process shell-file-name nil (current-buffer) nil shell-command-switch magit-stats-command-html-json-stdout)))
+    (let ((process-status (call-process "npx" nil (get-buffer-create "*magit-stats-stdout*") nil "magit-stats" "--json" "--stdout")))
       (if (= process-status 0)
           (pop-to-buffer (current-buffer))
         (error "Error while loading stats!")))
