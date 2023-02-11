@@ -40,6 +40,7 @@
 Each entry is of form: (CHAR FN DESCRIPTION)"
   :type 'list)
 
+
 ;;;###autoload
 (defun magit-stats-in-buffer ()
   "HTML report in a new buffer."
@@ -47,24 +48,21 @@ Each entry is of form: (CHAR FN DESCRIPTION)"
   (with-current-buffer (get-buffer-create "*magit-stats-stdout*")
     (message "Loading...")
     (erase-buffer)
-    (let ((process-status (call-process "npx" nil (get-buffer-create "*magit-stats-stdout*") nil "magit-stats" "--html" "--stdout")))
-      (if (= process-status 0)
-          (progn
-            (shr-render-buffer (current-buffer))
-            (pop-to-buffer (current-buffer))
-            (kill-buffer "*magit-stats-stdout*")
-            (message "Loaded!"))
-        (error "Error while loading stats!")))))
+    (shell-command "npx magit-stats --html --stdout" (current-buffer))
+    (shr-render-buffer (current-buffer))
+    (pop-to-buffer (current-buffer))
+    (kill-buffer "*magit-stats-stdout*")
+    (message "Loaded!")))
+
 
 ;;;###autoload
 (defun magit-stats-with-viewer ()
   "Open HTML report with OS default viewer."
   (interactive)
   (message "Loading...")
-  (let ((process-status (call-process "npx" nil nil nil "magit-stats")))
-    (if (= process-status 0)
-        (message "Loaded!")
-      (error "Error while loading stats!"))))
+  (shell-command  "npx magit-stats")
+  (message "Loaded!"))
+  
 
 ;;;###autoload
 (defun magit-stats-json-buffer ()
@@ -73,11 +71,10 @@ Each entry is of form: (CHAR FN DESCRIPTION)"
   (with-current-buffer (get-buffer-create "*magit-stats-stdout*")
     (message "Loading...")
     (erase-buffer)
-    (let ((process-status (call-process "npx" nil (get-buffer-create "*magit-stats-stdout*") nil "magit-stats" "--json" "--stdout")))
-      (if (= process-status 0)
-          (pop-to-buffer (current-buffer))
-        (error "Error while loading stats!")))
+    (shell-command "npx magit-stats --json --stdout" (current-buffer))
+    (pop-to-buffer (current-buffer))
     (message "Loaded!")))
+
 
 ;;;###autoload
 (defun magit-stats (backend)
