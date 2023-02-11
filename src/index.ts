@@ -1,9 +1,11 @@
 #! /usr/bin/env node
 
 import { writeFile } from "fs";
+import open from "open";
 import { format } from "prettier";
 import {
   applySpec,
+  both,
   concat,
   count,
   descend,
@@ -17,12 +19,12 @@ import {
   sortWith,
   uniq,
   zipWith,
-  both,
 } from "ramda";
+import { setFlagsFromString } from "v8";
 import _yargs from "yargs";
-import open from "open";
 import { hideBin } from "yargs/helpers";
-import { APP_DESC, COMMAND, DAY_HOURS, WEEK_DAYS } from "./config";
+import { APP_DESC, COMMAND, DAY_HOURS, MAX_HEAP_SIZE, WEEK_DAYS } from "./config";
+import { generateHTMLReport } from "./htmlReport";
 import {
   checkIsInsideGitDir,
   generateDateObj,
@@ -31,13 +33,14 @@ import {
   logMsg,
   mapIndexed,
 } from "./utils";
-import { generateHTMLReport } from "./htmlReport";
 
 const yargs = _yargs(hideBin(process.argv));
 
 export type getGitLogStatsType = ReturnType<typeof getGitLogStats>;
 
-const getGitLogStats = () => {
+const getGitLogStats = (argv: any) => {
+  setFlagsFromString(`--max_old_space_size=${argv.heap}`);
+
   const gitLogOutput = getGitLog();
 
   const commits = pipe(
@@ -132,24 +135,16 @@ const getGitLogStats = () => {
 };
 
 const processOutput = (stats: any, argv: any) => {
-  const argvKeys = Object.keys(argv);
-
-  if (!(argvKeys.includes("json") || argvKeys.includes("stdout") || argvKeys.includes("html"))) {
-    logError("Error: You should choose an option, such as --html, --json or --stdout.");
-    logError(`Check all the options with: ${COMMAND} --help`);
-    process.exit(-1);
-  }
-
   const isMinified = argv.minify;
 
-  const htmlReport = generateHTMLReport(stats);
-
-  if (argv.html && argv.stdout && argv.json !== "") {
+  if (argv.html && argv.stdout && !argv.json) {
+    const htmlReport = generateHTMLReport(stats);
     logMsg(htmlReport);
     return;
   }
 
-  if (argv.html && !argv.stdout && argv.json !== "") {
+  if (argv.html && !argv.stdout && !argv.json) {
+    const htmlReport = generateHTMLReport(stats);
     writeFile(argv.html, htmlReport, (error) => {
       // TODO: Minify it with prettier
       if (error) {
@@ -161,57 +156,64 @@ const processOutput = (stats: any, argv: any) => {
     return;
   }
 
-  if (argv.stdout) logMsg(JSON.stringify(stats, null, isMinified ? 0 : 2));
+  if (argv.json && argv.stdout) {
+    logMsg(JSON.stringify(stats, null, isMinified ? 0 : 2));
+    return;
+  }
 
-  writeFile(
-    argv.json === "" ? "git-stats.json" : argv.json,
-    JSON.stringify(stats, null, isMinified ? 0 : 2),
-    (error) => {
+  if (argv.json)
+    writeFile("git-stats.json", JSON.stringify(stats, null, isMinified ? 0 : 2), (error) => {
       if (error) {
         logError(error.message);
         process.exit(-1);
       }
-    },
-  );
+    });
 };
 
 const getArgs = () =>
   yargs
     .usage(`${APP_DESC}\n`)
     .usage(`Usage: ${COMMAND} [options]`)
-    .option("html", { type: "string", default: "git-stats.html" })
-    .alias("l", "html")
-    .nargs(".", 1)
-    .describe("l", "Saves a HTML stats report")
+    .option("html", {
+      type: "string",
+      default: "git-stats.html",
+      nargs: 0,
+      description: "Saves a HTML stats report",
+    })
     .example(`${COMMAND}`, "save report to git-stats.html")
     .example(`${COMMAND} [--html | -l] file.html`, "save report to file.html")
     .option("no-open", { type: "boolean" })
     .describe("no-open", "Does not open the generate HTML file")
-    .option("json", { type: "string" })
-    .alias("j", "json")
-    .nargs("j", 0)
-    .describe("j", "Saves JSON to file")
+    .option("heap", {
+      type: "string",
+      default: MAX_HEAP_SIZE,
+      nargs: 1,
+      description: "Size of JVM heap",
+    })
+    .option("json", {
+      type: "boolean",
+      description: "Saves JSON to File (git-stats.json)",
+    })
     .example(`${COMMAND} --json stats.json`, "save stats to JSON file")
     .option("stdout", { type: "boolean" })
-    .alias("s", "stdout")
-    .describe("s", "Prints stats to stdout")
+    .describe("stdout", "Prints stats to stdout")
     .example(`${COMMAND} --stdout`, "prints to stdout")
     .option("minify", { type: "boolean" })
-    .alias("m", "minify")
-    .describe("m", "JSON output is minified")
+    .describe("minify", "JSON output is minified")
     .example(`${COMMAND} --stdout --minify`, "prints to stdout minified")
     .help("h")
     .alias("h", "help")
     .describe("h", "Show help")
     .alias("v", "version")
-    .describe("version", "Show app version").argv;
+    .describe("version", "Show app version")
+    .showHelpOnFail(true).argv;
 
 const main = () => {
-  checkIsInsideGitDir();
-
   const argv = getArgs();
 
-  const stats = getGitLogStats();
+  checkIsInsideGitDir();
+
+  const stats = getGitLogStats(argv);
 
   processOutput(stats, argv);
 };
