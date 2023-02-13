@@ -28,13 +28,22 @@ import { generateHTMLReport } from "./htmlReport";
 import {
   checkIsInsideGitDir,
   generateDateObj,
+  getDirectoryName,
   getGitLog,
+  getGitRemoteURL,
   logError,
   logMsg,
   mapIndexed,
 } from "./utils";
 
 const yargs = _yargs(hideBin(process.argv));
+
+const checkOptionsAreValid = (argv: any) => {
+  if (argv.json && argv.html) {
+    logError("Options --json and --html cannot be used at the same time.");
+    process.exit(-1);
+  }
+};
 
 export type getGitLogStatsType = ReturnType<typeof getGitLogStats>;
 
@@ -123,36 +132,52 @@ const getGitLogStats = (argv: any) => {
     pathOr(0, [0, "day"], commitDatesSorted),
   ).toDateString();
 
+  const repositoryName = argv.repo ? argv.repo : getDirectoryName();
+
+  const remoteURL = getGitRemoteURL();
+
   return {
-    totalCommits,
     authors,
     commitsByAuthor,
     commitsByDayHour,
     commitsByWeekDay,
     firstCommit,
     lastCommit,
+    remoteURL,
+    repositoryName,
+    totalCommits,
+    htmlOptions: {
+      noIcons: "icons" in argv,
+    },
   };
 };
 
 const processOutput = (stats: any, argv: any) => {
+  if (!argv.json && !argv.html) argv.html = true;
+
   const isMinified = argv.minify;
 
-  if (argv.html && argv.stdout && !argv.json) {
+  const getFileName = () => {
+    if (argv.file) return argv.file;
+    if (argv.html) return "git-stats.html";
+    if (argv.json) return "git-stats.json";
+  };
+
+  if (argv.html && argv.stdout) {
     const htmlReport = generateHTMLReport(stats);
     logMsg(htmlReport);
     return;
   }
 
-  if (argv.html && !argv.stdout && !argv.json) {
+  if (argv.html) {
     const htmlReport = generateHTMLReport(stats);
-    writeFile(argv.html, htmlReport, (error) => {
-      // TODO: Minify it with prettier
+    writeFile(getFileName(), htmlReport, (error) => {
       if (error) {
         logError(error.message);
         process.exit(-1);
       }
     });
-    if (!(argv.open === false)) open(argv.html);
+    if (!(argv.open === false)) open(getFileName());
     return;
   }
 
@@ -162,7 +187,7 @@ const processOutput = (stats: any, argv: any) => {
   }
 
   if (argv.json)
-    writeFile("git-stats.json", JSON.stringify(stats, null, isMinified ? 0 : 2), (error) => {
+    writeFile(getFileName(), JSON.stringify(stats, null, isMinified ? 0 : 2), (error) => {
       if (error) {
         logError(error.message);
         process.exit(-1);
@@ -175,46 +200,48 @@ const getArgs = () =>
     .usage(`${APP_DESC}\n`)
     .usage(`Usage: ${COMMAND} [options]`)
     .option("html", {
-      type: "string",
-      default: "git-stats.html",
-      nargs: 0,
-      description: "Saves a HTML stats report",
+      type: "boolean",
+      description: "Saves report to HTML file (default: git-stats.html)",
     })
-    .example(`${COMMAND}`, "save report to git-stats.html")
-    .example(`${COMMAND} [--html | -l] file.html`, "save report to file.html")
-    .option("no-open", { type: "boolean" })
-    .describe("no-open", "Does not open the generate HTML file")
+    .option("json", {
+      type: "boolean",
+      description: "Saves report to JSON file (default: git-stats.json)",
+    })
+    .option("stdout", { type: "boolean", description: "Outputs to stdout" })
+    .option("minify", { type: "boolean", description: "Minifies the JSON output" })
+    .option("file", { type: "string", description: "Output file name" })
+    .option("repo", { type: "string", description: "Repository name to show on report" })
+    .option("no-open", {
+      type: "boolean",
+      description: "Does not auto-open the generate HTML file",
+    })
+    .option("no-icons", { type: "boolean", description: "Does not use icons on HTML" })
     .option("heap", {
       type: "string",
       default: MAX_HEAP_SIZE,
       nargs: 1,
-      description: "Size of JVM heap",
+      description: "Node memory heap size",
     })
-    .option("json", {
-      type: "boolean",
-      description: "Saves JSON to File (git-stats.json)",
-    })
-    .example(`${COMMAND} --json stats.json`, "save stats to JSON file")
-    .option("stdout", { type: "boolean" })
-    .describe("stdout", "Prints stats to stdout")
-    .example(`${COMMAND} --stdout`, "prints to stdout")
-    .option("minify", { type: "boolean" })
-    .describe("minify", "JSON output is minified")
-    .example(`${COMMAND} --stdout --minify`, "prints to stdout minified")
     .help("h")
     .alias("h", "help")
     .describe("h", "Show help")
     .alias("v", "version")
     .describe("version", "Show app version")
+    .example(`${COMMAND}`, "saves report to git-stats.html an opens the file with default app")
+    .example(`${COMMAND} --html`, "same as above")
+    .example(`${COMMAND} --html --file out.html`, "saves report to out.html and open it")
+    .example(`${COMMAND} --html --no-open`, "saves report to git-stats.html")
+    .example(`${COMMAND} --json`, "saves report to git-stats.json")
+    .example(`${COMMAND} --json --file out.json`, "saves report to out.json")
+    .example(`${COMMAND} --json --stdout`, "prints JSON report to stdout")
     .showHelpOnFail(true).argv;
 
 const main = () => {
   const argv = getArgs();
-
+  checkOptionsAreValid(argv);
   checkIsInsideGitDir();
 
   const stats = getGitLogStats(argv);
-
   processOutput(stats, argv);
 };
 

@@ -1,6 +1,6 @@
 import * as echarts from "echarts";
 import { applySpec, prop } from "ramda";
-import { weekDayNameShort, truncateString } from "../utils";
+import { truncateString, weekDayNameShort } from "../utils";
 
 // TODO: proper typing
 interface chartProps {

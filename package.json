@@ -1,6 +1,6 @@
 {
   "name": "magit-stats",
-  "version": "1.0.19-dev",
+  "version": "1.0.20-dev",
   "description": "Your git repository statistics",
   "main": "./src/index.ts",
   "type": "module",
