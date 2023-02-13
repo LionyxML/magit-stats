@@ -1,9 +1,9 @@
 // prettier-ignore
 
+import { readFileSync } from "fs";
 import { getGitLogStatsType } from "../";
 import { renderChart } from "../chartGenerator";
 import { weekDayName } from "../utils";
-import { readFileSync } from "fs";
 
 export const generateHTMLReport = ({
   firstCommit,
@@ -13,6 +13,9 @@ export const generateHTMLReport = ({
   commitsByAuthor,
   commitsByDayHour,
   commitsByWeekDay,
+  repositoryName,
+  remoteURL,
+  htmlOptions: { noIcons },
 }: getGitLogStatsType) => {
   const resetStyle = readFileSync(new URL("../vendor/reset.css", import.meta.url));
   const reportStyle = readFileSync(new URL("./styles.css", import.meta.url));
@@ -24,7 +27,7 @@ export const generateHTMLReport = ({
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>magit-stats - Repository Statistics 📈</title>
+    <title>magit-stats - Repository Statistics  ${noIcons ? "" : "📈"}</title>
     <style>
       ${resetStyle}
       ${reportStyle}
@@ -36,14 +39,18 @@ export const generateHTMLReport = ({
   <div class="container">
 
     <div class="card title">
-      <h1>Repository Statistics 📈</h1>
+      <h1>Repository Statistics ${noIcons ? "" : "📈"}</h1>
     </div>
 
     <div class="statistics">
 
       <div class="card">
         <table class="total-commits">
-            <tr><th class="first-column"><div class="sections-title">📟 General Info</div></th></tr>
+            <tr><th class="first-column"><div class="sections-title"> ${
+              noIcons ? "" : "📟 "
+            }General Info</div></th></tr>
+
+            <tr><td>Repository</td><td>${repositoryName}</td></tr>
             <tr>
               <td>
                 Commits
@@ -55,21 +62,22 @@ export const generateHTMLReport = ({
             </tr>
             <tr><td>Fist Commit</td><td>${firstCommit}</td></tr>
             <tr><td>Last Commit</td><td>${lastCommit}</td></tr>
+            <tr><td>Remote</td><td><a href="${remoteURL}" target="_blank">${remoteURL}</a></td></tr>
         </table>
       </div>
 
       <div class="card">
-        <div class="sections-title">💻 Commits by Author</div>
+        <div class="sections-title">${noIcons ? "" : "💻 "}Commits by Author</div>
         ${renderChart({ data: commitsByAuthor, chartType: "COMMITS_BY_AUTHOR" })}
       </div>
 
       <div class="card">
-        <div class="sections-title">🕐 Commits by Day Hour</div>
+        <div class="sections-title">${noIcons ? "" : "🕐 "}Commits by Day Hour</div>
         ${renderChart({ data: commitsByDayHour, chartType: "COMMITS_BY_HOUR" })}
       </div>
 
       <div class="card">
-        <div class="sections-title">📅 Commits by Weekday</div>
+        <div class="sections-title">${noIcons ? "" : "📅 "}Commits by Weekday</div>
         ${renderChart({ data: commitsByWeekDay, chartType: "COMMITS_BY_WEEKDAY" })}
       </div>
 
@@ -126,7 +134,7 @@ export const generateHTMLReport = ({
     </div>
 
     <div class="card">
-        🤖 Report generated at: ${new Date()}
+        ${noIcons ? "" : "🤖 "}Report generated at: ${new Date()}
         by <a href="https://github.com/LionyxML/magit-stats" target="_blank">[magit-stats]</a>
     </div>
 

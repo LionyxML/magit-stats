@@ -1,6 +1,12 @@
 import { execSync } from "child_process";
+import path from "path";
 import { addIndex, map, uniq } from "ramda";
-import { CHECK_GIT_DIR_CMD, GIT_LOG_CMD, GIT_LOG_CMD_ONLY_AUTHORS } from "../config";
+import {
+  CHECK_GIT_DIR_CMD,
+  GIT_LOG_CMD,
+  GIT_LOG_ONLY_AUTHORS_CMD,
+  GIT_REMOTE_URL_CMD,
+} from "../config";
 
 export const logMsg = (msg: string | object) => console.log(msg);
 
@@ -33,7 +39,7 @@ export const checkIsInsideGitDir = () => {
 // HACK: maxBuffer undefined is not documented and may stop working out of nowhere
 export const getGitLog = () => {
   try {
-    const rawAuthors = execSync(GIT_LOG_CMD_ONLY_AUTHORS, { maxBuffer: undefined }).toString();
+    const rawAuthors = execSync(GIT_LOG_ONLY_AUTHORS_CMD, { maxBuffer: undefined }).toString();
     const authorsArr = uniq(String(rawAuthors).split("\n"));
     const authorsSanitizedArr = authorsArr.map((name) => name.replace(/"/g, ""));
 
@@ -47,6 +53,16 @@ export const getGitLog = () => {
     }, gitLog);
 
     return gitLogSanitized;
+  } catch {
+    process.exit(-1);
+  }
+};
+
+export const getDirectoryName = (): string => String(path.basename(path.resolve(process.cwd())));
+
+export const getGitRemoteURL = (): string => {
+  try {
+    return String(execSync(GIT_REMOTE_URL_CMD));
   } catch {
     process.exit(-1);
   }
