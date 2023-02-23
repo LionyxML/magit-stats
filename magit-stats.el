@@ -84,7 +84,7 @@ Each entry is of form: (CHAR FN DESCRIPTION)"
                           (format "magit-stats backend (%s):\n%s"
                                   (substitute-command-keys "\\[keyboard-quit] to quit")
                                   (mapconcat (lambda (b) (format "%c - %s\n" (car b) (car (last b))))
-                                             magit-stats-backends))
+                                             magit-stats-backends ""))
                           (mapcar #'car magit-stats-backends))
                          magit-stats-backends))))
   (if (functionp backend) (funcall backend) (user-error "Unknown backend: %s" backend)))
