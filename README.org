@@ -4,10 +4,8 @@
 #+OPTIONS: toc:nil
 
 * magit-stats
-[[https://melpa.org/packages/magit-stats-badge.svg]]
-
-[[https://img.shields.io/npm/v/magit-stats?label=magit-stats&style=plastic]]
-
+[[file:https://melpa.org/packages/magit-stats-badge.svg]]
+[[file:https://img.shields.io/npm/v/magit-stats?label=magit-stats&style=plastic]]
 
 ** What is this package?
 A git statistics report generator that can be use as an individual CLI
