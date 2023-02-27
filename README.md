@@ -2,14 +2,13 @@
 
 # magit-stats
 
+<./doc/demo-magit-stats.mp4>
+
 
 ## What is this package?
 
-A git statistics report generator that can be use as an individual CLI
+A git statistics report generator that can be use both as an individual CLI
 Tool or called from inside Emacs.
-
-    IMPORTANT: this is a node npx package, if you wan't to use it from inside EMACS
-    scroll to the "Emacs Usage" section bellow.
 
 Here's a demo of the report:
 ![img](./doc/demo.png)
