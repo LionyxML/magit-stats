@@ -5,7 +5,7 @@
 
 * magit-stats
 
-[[./doc/demo-magit-stats.mp4]]
+[[./doc/demo.gif]]
 
 ** What is this package?
 A git statistics report generator that can be use both as an individual CLI
