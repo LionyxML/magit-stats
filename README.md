@@ -2,6 +2,10 @@
 
 # magit-stats
 
+[![img](https://melpa.org/packages/magit-stats-badge.svg)](https://melpa.org/#/magit-stats)
+
+[https://img.shields.io/npm/v/magit-stats?label=magit-stats&style=plastic](https://img.shields.io/npm/v/magit-stats?label=magit-stats&style=plastic)
+
 
 ## What is this package?
 
@@ -66,7 +70,9 @@ You can get all options of this cli tool by issuing `npx magit-stats --help`.
 
 ## Emacs Usage
 
-`NOTE: NOT YET AVAILABLE FROM MELPA`
+NOTE: Requires you to be able to execute \`npx\` (see above) and have it set
+to your emacs path.
+
 Install it from [MELPA](<https://melpa.org/#/magit-stats>) and add to your \`.emacs\` file:
 
     (require 'magit-stats)
@@ -77,64 +83,4 @@ Choose an option generate your report!
 
 Demo:
 ![img](./doc/demo_emacs.png)
-
-1.  TODOs <code>[79%]</code>
-
-    -   [X] Define git command to output log
-    
-    -   [X] Detects if it is in a git folder
-    
-    -   [X] Uses JSON parser to ensure valid JSONs are created
-    
-    -   [X] Calculate total commits
-    
-    -   [X] Calculate commits by author
-    
-    -   [X] Calculate commits by week day
-    
-    -   [X] Calculate commits per day hour
-    
-    -   [ ] Calculate repository size
-    
-    -   [X] Calculate initial commit date
-    
-    -   [X] Calculate last commit date
-    
-    -   [X] Change project language to Typescript
-    
-    -   [X] Configure build scripts and bin
-    
-    -   [X] Configure npm registry and npx
-    
-    -   [ ] Compose time series of commits by user
-    
-    -   [X] Make basic CLI
-    
-    -   [X] Make more robust CLI
-    
-    -   [X] Create exporter to JSON on stdout
-    
-    -   [X] Create exporter to JSON file
-    
-    -   [X] Create basic exporter do HTML
-    
-    -   [ ] Add minified option to HTML
-    
-    -   [X] Fix locale translation for -h and -v options on &#x2013;help
-    
-    -   [X] Add chart of commitsByWeekDay and commitsByAuthor to HTML
-    
-    -   [ ] Add series chart to HTML
-    
-    -   [X] Work on UI/UX on HTML
-    
-    -   [ ] Create exporter to org file
-    
-    -   [ ] Create exporter to md file
-    
-    -   [X] Make elisp package that calls the node function
-    
-    -   [X] Adds repository name or dirname
-    
-    -   [X] Choose if you want utf-8 icons ir not
 
