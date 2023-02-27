@@ -2,10 +2,6 @@
 
 # magit-stats
 
-[![img](https://melpa.org/packages/magit-stats-badge.svg)](https://melpa.org/#/magit-stats)
-
-[https://img.shields.io/npm/v/magit-stats?label=magit-stats&style=plastic](https://img.shields.io/npm/v/magit-stats?label=magit-stats&style=plastic)
-
 
 ## What is this package?
 
