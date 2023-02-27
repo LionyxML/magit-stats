@@ -4,6 +4,7 @@
 #+OPTIONS: toc:nil
 
 * magit-stats
+[[https://img.shields.io/badge/npx-magit--stats-red?style=plastic&logo=npm#][IMG]]
 
 [[./doc/demo.gif]]
 
