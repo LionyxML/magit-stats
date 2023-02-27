@@ -1,9 +1,6 @@
-
-
 # magit-stats
 
-<./doc/demo-magit-stats.mp4>
-
+![demo_video](./doc/demo-magit-stats.mp4)
 
 ## What is this package?
 
@@ -13,13 +10,11 @@ Tool or called from inside Emacs.
 Here's a demo of the report:
 ![img](./doc/demo.png)
 
-
 ## Requirements
 
 You need to have `node@latest` installed in your system and the `npx` tool.
 
 Just check if you have it issuing the command: `npx --version`.
-
 
 ## Basic Usage
 
@@ -30,15 +25,14 @@ Navigate to your git folder and issue:
 And that's it! A new `git-stats.html` file is generated with your
 repository statistics and will be automatically opened.
 
-
 ## Advanced Usage
 
 You can get all options of this cli tool by issuing `npx magit-stats --help`.
 
     [magit-stats] - Your git repository statistics
-    
+
     Usage: npx magit-stats  [options]
-    
+
     Opções:
           --html      Saves report to HTML file (default: git-stats.html)  [boolean]
           --json      Saves report to JSON file (default: git-stats.json)  [boolean]
@@ -51,7 +45,7 @@ You can get all options of this cli tool by issuing `npx magit-stats --help`.
           --heap      Node memory heap size                 [string] [default: 4096]
       -h, --help      Show help                                            [boolean]
       -v, --version   Show app version                                     [boolean]
-    
+
     Examples:
       npx magit-stats                          saves report to git-stats.html an ope
                                                ns the file with default app
@@ -62,13 +56,12 @@ You can get all options of this cli tool by issuing `npx magit-stats --help`.
       npx magit-stats  --json --file out.json  saves report to out.json
       npx magit-stats  --json --stdout         prints JSON report to stdout
 
-
 ## Emacs Usage
 
 NOTE: Requires you to be able to execute \`npx\` (see above) and have it set
 to your emacs path.
 
-Install it from [MELPA](<https://melpa.org/#/magit-stats>) and add to your \`.emacs\` file:
+Install it from [MELPA](https://melpa.org/#/magit-stats) and add to your \`.emacs\` file:
 
     (require 'magit-stats)
 
@@ -78,4 +71,3 @@ Choose an option generate your report!
 
 Demo:
 ![img](./doc/demo_emacs.png)
-
