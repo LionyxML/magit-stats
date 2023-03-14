@@ -1,6 +1,6 @@
 # magit-stats
 
-![IMG](https://img.shields.io/badge/npx-magit--stats-red?style=plastic&logo=npm#)
+[![img](https://melpa.org/packages/magit-stats-badge.svg)](https://melpa.org/#/magit-stats) [IMG](https://img.shields.io/badge/npx-magit--stats-red?style=plastic&logo=npm#)
 
 ![img](./doc/demo.gif)
 
