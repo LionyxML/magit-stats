@@ -103,3 +103,20 @@ dist
 
 # TernJS port file
 .tern-port
+
+
+# Cargo
+/target
+/Cargo.lock
+
+# Build directory
+/build/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Rust language server (RLS)
+/.rustup/
