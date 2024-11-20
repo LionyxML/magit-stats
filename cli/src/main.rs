@@ -1,4 +1,6 @@
 use clap::{Arg, Command};
+use serde::Deserialize;
+use serde_json;
 
 const APP_DESC: &str = "A CLI utility for generating Git statis reports";
 const COMMAND: &str = "git-stats";
@@ -67,12 +69,51 @@ fn check_options_are_valid(args: &clap::ArgMatches) {
     }
 }
 
+fn get_git_log() -> String {
+    let output = std::process::Command::new("git")
+        .arg("log")
+        .arg("--pretty=format:{\"author\":{\"name\":\"%an\",\"email\":\"%ae\",\"date\":\"%ad\"},\"message\":\"%s\"},")
+        .output()
+        .expect("Failed to execute git log");
+
+    String::from_utf8(output.stdout).expect("Invalid UTF-8 output")
+}
+
+#[derive(Debug, Deserialize)]
+struct Author {
+    name: String,
+    email: String,
+    date: String,
+}
+
+#[derive(Debug, Deserialize)]
+struct Commit {
+    author: Author,
+    message: String,
+}
+
+fn parse_git_log(log: &str) -> Vec<Commit> {
+    let formatted = format!("[{}]", log.trim_end_matches(','));
+    serde_json::from_str(&formatted).expect("Failed to parse JSON")
+}
+
+fn get_total_commits(commits: &[Commit]) -> usize {
+    commits.len()
+}
+
 fn main() {
     let args = get_args();
 
     check_options_are_valid(&args);
 
-    println!("Noice, valid options...");
+    let log = get_git_log();
+    let commits = parse_git_log(&log);
 
-    println!("{:?}", args);
+    // println!(">>> Commits: {:?}", commits);
+
+    let total_commits = get_total_commits(&commits);
+
+    println!(">>> Total Commits: {:?}", total_commits);
+
+
 }
