@@ -106,17 +106,8 @@ dist
 
 
 # Cargo
-/target
-/Cargo.lock
+cli/target
+cli/Cargo.lock
 
 # Build directory
-/build/
-
-# IDEs and Editors
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Rust language server (RLS)
-/.rustup/
+cli/build/
